@@ -1,6 +1,7 @@
-import { readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import handleRequestError from "./router/error.handler.js";
+import handleRequestPage from "./router/page.handler.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,19 +13,25 @@ const __dirname = path.dirname(__filename);
 export default function handleRequest(req, res) {
   const method = req.method;
 
-  if (!method || method !== "GET") {
-    const error = readFileSync(
-      path.join(__dirname, "./public/error.html"),
-      "utf-8",
-    );
-    const content = error
-      .replace(/{{STATUS_CODE}}/gi, "405")
-      .replace(/{{STATUS_MESSAGE}}/gi, "Método não permitido");
+  if (!method || method !== "GET")
+    return handleRequestError({
+      req,
+      res,
+      statusCode: 405,
+      statusMessage: "Método não permitido",
+    });
 
-    res.statusCode = 405;
-    res.setHeader("Content-Type", "text/html");
-    res.end(content);
+  const url = req.url;
 
-    return;
-  }
+  console.log(`REQUESTED URL ${url}`);
+
+  if (!url)
+    return handleRequestError({
+      res,
+      req,
+      statusCode: 400,
+      statusMessage: "Requisição mal-formada",
+    });
+
+  handleRequestPage({ res, req, url });
 }
