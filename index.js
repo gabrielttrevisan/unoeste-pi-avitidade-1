@@ -1,11 +1,15 @@
-import http from "http";
-import handleRequest from "./router.js";
+import path from "path";
+import { fileURLToPath } from "url";
+import express from "express";
 
-const HOSTNAME = "localhost";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const PORT = 3004;
 
-const server = http.createServer(handleRequest);
+const app = express();
 
-server.listen(PORT, HOSTNAME, () => {
-  console.log(`Server running at ${HOSTNAME}:${PORT}`);
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.listen(PORT, () => {
+  console.log(`Listening on PORT ${PORT}...`);
 });
