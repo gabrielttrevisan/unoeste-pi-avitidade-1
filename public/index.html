@@ -1,11 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    PÁGINA INICIAL
-</body>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --background-dark: #333333;
+        --foreground-dark: #fffcf0;
+      }
+
+      html,
+      body {
+        width: 100vw;
+        min-height: 100%;
+        background-color: var(--background-dark);
+      }
+
+      * {
+        font-family: "SN Pro", sans-serif;
+        color: var(--foreground-dark);
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      body > header {
+        font-weight: 300;
+        font-size: 32px;
+        line-height: 40px;
+        text-transform: uppercase;
+        padding: 64px 128px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>Cursemy</header>
+
+    <div class="cursemy-card"></div>
+  </body>
 </html>
