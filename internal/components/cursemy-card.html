@@ -155,6 +155,12 @@
         left: 0;
       }
     }
+
+    .cursemy-card__desc {
+      font-size: 12px;
+      font-weight: 300;
+      padding-top: 6px !important;
+    }
   </style>
 
   <div class="cursemy-card --loading">
@@ -197,6 +203,17 @@
           <span class="cursemy-card__prices-full">
             <slot name="price-full"></slot>
           </span>
+        </p>
+
+        <p class="cursemy-card__desc">
+          Inicia em
+          <span class="cursemy-card__start-at"
+            ><slot name="start-at"></slot
+          ></span>
+          com duração de
+          <span class="cursemy-card__duration"
+            ><slot name="duration"></slot
+          ></span>
         </p>
       </div>
 
