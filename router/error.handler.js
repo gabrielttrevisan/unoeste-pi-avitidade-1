@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readFile } from "node:fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -6,26 +6,33 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 /**
- * @typedef {Object} ErrorContext
- * @prop {number} statusCode
- * @prop {string} statusMessage
- * @prop {import("http").IncomingMessage} req
- * @prop {import("http").ServerResponse} res
+ *
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
  */
+export default async function handleError(_, res, { message, code } = {}) {
+  const [layout, error] = await Promise.all([
+    readFile(
+      path.join(__dirname, "../internal/components/layout.html"),
+      "utf-8",
+    ),
+    readFile(
+      path.join(__dirname, "../internal/components/error.html"),
+      "utf-8",
+    ),
+  ]);
 
-/**
- * @param {ErrorContext} context
- */
-export default function handleRequestError({ res, statusCode, statusMessage }) {
-  const error = readFileSync(
-    path.join(__dirname, "../public/error.html"),
-    "utf-8",
-  );
-  const content = error
-    .replace(/{{STATUS_CODE}}/gi, statusCode.toString())
-    .replace(/{{STATUS_MESSAGE}}/gi, statusMessage);
+  const errorContent = error
+    .replace("{{STATUS_CODE}}", code)
+    .replace("{{STATUS_MESSAGE}}", message);
 
-  res.statusCode = statusCode;
+  const page = layout
+    .replace("{{title}}", `Cursemy - ${message}`)
+    .replace("{{content}}", `${errorContent}`)
+    .replace(/\s{2,}/gi, " ");
+
   res.setHeader("Content-Type", "text/html");
-  res.end(content);
+  res.status(200).send(page);
 }
+
+export const ROUTE_MATCH = "";

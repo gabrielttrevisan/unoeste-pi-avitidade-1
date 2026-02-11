@@ -62,6 +62,10 @@
         }
       }
 
+      main {
+        width: 100%;
+      }
+
       .cursemy-cart {
         color: var(--foreground-dark);
         background: var(--background-surface-dark);
@@ -80,11 +84,13 @@
         }
       }
 
-      main {
+      .cursemies {
         display: grid;
         grid-template-columns: 272px;
         grid-template-rows: auto;
         gap: 32px;
+        width: fit-content;
+        margin: 0 auto;
       }
 
       @media (min-width: 768px) {
@@ -92,13 +98,13 @@
           padding: 64px 0;
         }
 
-        main {
+        .cursemies {
           grid-template-columns: repeat(2, 272px);
         }
       }
 
       @media (min-width: 1024px) {
-        main {
+        .cursemies {
           grid-template-columns: repeat(3, 272px);
         }
       }
