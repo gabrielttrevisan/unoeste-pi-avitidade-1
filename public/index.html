@@ -1,116 +1,192 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap"
-      rel="stylesheet"
-    />
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --background-dark: #333333;
+      --background-surface-dark-light: rgba(255, 255, 255, 0.05);
+      --background-surface-dark: transparent;
+      --foreground-dark: #fffcf0;
+
+      --shadow-base: 0 4px 10px rgba(0, 0, 0, 0.25);
+    }
+
+    html {
+      scroll-timeline: --main-timeline;
+    }
+
+    html,
+    body {
+      width: 100vw;
+      min-height: 100%;
+      background-color: var(--background-dark);
+    }
+
+    * {
+      font-family: "SN Pro", sans-serif;
+      color: var(--foreground-dark);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body>header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 0;
+      gap: 16px;
+      margin: 0 auto;
+      z-index: 600;
+
+      >h1 {
+        font-weight: 300;
+        font-size: 32px;
+        line-height: 40px;
+        text-transform: uppercase;
+      }
+    }
+
+    .cursemy-cart {
+      color: var(--foreground-dark);
+      background: var(--background-surface-dark);
+      border: 1px solid var(--background-surface-dark-light);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 200ms ease-in-out;
+
+      &:hover {
+        background: var(--background-surface-dark-light);
+      }
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 272px;
+      grid-template-rows: auto;
+      gap: 32px;
+    }
+
+    @media (min-width: 768px) {
+      body>header {
+        padding: 64px 0;
+      }
+
+      main {
+        grid-template-columns: repeat(2, 272px);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      main {
+        grid-template-columns: repeat(3, 272px);
+      }
+    }
+  </style>
+
+  <script src="/scripts/cursemy-card.element.js"></script>
+</head>
+
+<body>
+  <template id="cursemy-card">
     <style>
-      :root {
-        --background-dark: #333333;
-        --background-surface-dark-light: rgba(255, 255, 255, 0.05);
-        --background-surface-dark: transparent;
-        --foreground-dark: #fffcf0;
-
-        --shadow-base: 0 4px 10px rgba(0, 0, 0, 0.25);
-      }
-
-      html,
-      body {
-        width: 100vw;
-        min-height: 100%;
-        background-color: var(--background-dark);
-      }
-
-      * {
-        font-family: "SN Pro", sans-serif;
-        color: var(--foreground-dark);
-      }
-
-      body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-
-      body > header {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 64px 128px;
-        gap: 16px;
-
-        > h1 {
-          font-weight: 300;
-          font-size: 32px;
-          line-height: 40px;
-          text-transform: uppercase;
-        }
+      :host {
+        display: block;
+        justify-self: stretch;
+        align-self: stretch;
       }
 
       .cursemy-card {
         max-width: 272px;
         width: 272px;
+        height: 100%;
         background: var(--background-surface-dark);
         border-radius: 4px;
-        overflow: hidden;
         position: relative;
         border: 1px solid var(--background-surface-dark-light);
         cursor: pointer;
         transition: all 200ms ease-in-out;
+        anchor-name: --cursemy-card;
+
+        &.--highlight {
+          border-color: #c4c4c4;
+
+          &::before {
+            content: "mais vendido";
+            display: block;
+            padding: 4px 8px;
+            color: #333333;
+            background: #c4c4c4;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            border-radius: 4px;
+            position: absolute;
+            top: anchor(--cursemy-card top);
+            right: 16px;
+            width: max-content;
+            z-index: 3;
+            transform: translateY(-50%);
+          }
+        }
 
         &:hover {
           background: var(--background-surface-dark-light);
 
-          .cursemy-card__image-box > img {
+          .cursemy-card__image-box>img {
             opacity: 1;
           }
+        }
+
+        &.--loading::after {
+          background: var(--background-surface-dark-light);
+          filter: blur(2px);
         }
       }
 
       .cursemy-card__content-box {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: space-between;
         padding: 16px;
         margin-top: -64px;
+        height: calc(100% - 240px + 32px);
 
-        > * {
+        >div:first-child>* {
           padding: 0;
           margin: 0;
         }
       }
 
-      .cursemy-card__image-box > img {
+      .cursemy-card__image-box>img {
         mask-image: linear-gradient(black, transparent);
         opacity: 0.85;
         transition: all 200ms ease-in-out;
-      }
-
-      .cursemy-cart {
-        color: var(--foreground-dark);
-        background: var(--background-surface-dark);
-        border: 1px solid var(--background-surface-dark-light);
-        border-radius: 50%;
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 200ms ease-in-out;
-
-        &:hover {
-          background: var(--background-surface-dark-light);
-        }
+        border-radius: 4px 4px 0 0;
       }
 
       .cursemy-card__link-overlay {
         position: absolute;
         inset: 0;
         background: transparent;
+        z-index: 4;
       }
 
       .cursemy-card__button {
@@ -184,60 +260,132 @@
         }
       }
     </style>
-  </head>
-  <body>
-    <header>
-      <h1>Cursemy</h1>
 
-      <button type="button" class="cursemy-cart">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          width="16"
-          height="16"
-        >
-          <path
-            d="M4.00436 6.41686L0.761719 3.17422L2.17593 1.76001L5.41857 5.00265H20.6603C21.2126 5.00265 21.6603 5.45037 21.6603 6.00265C21.6603 6.09997 21.6461 6.19678 21.6182 6.29L19.2182 14.29C19.0913 14.713 18.7019 15.0027 18.2603 15.0027H6.00436V17.0027H17.0044V19.0027H5.00436C4.45207 19.0027 4.00436 18.5549 4.00436 18.0027V6.41686ZM5.50436 23.0027C4.67593 23.0027 4.00436 22.3311 4.00436 21.5027C4.00436 20.6742 4.67593 20.0027 5.50436 20.0027C6.33279 20.0027 7.00436 20.6742 7.00436 21.5027C7.00436 22.3311 6.33279 23.0027 5.50436 23.0027ZM17.5044 23.0027C16.6759 23.0027 16.0044 22.3311 16.0044 21.5027C16.0044 20.6742 16.6759 20.0027 17.5044 20.0027C18.3328 20.0027 19.0044 20.6742 19.0044 21.5027C19.0044 22.3311 18.3328 23.0027 17.5044 23.0027Z"
-          ></path>
-        </svg>
-      </button>
-    </header>
-
-    <div class="cursemy-card">
+    <div class="cursemy-card --loading">
       <picture class="cursemy-card__image-box">
-        <img
-          src="/images/placeholder.webp"
-          alt="Curso sem imagem"
-          width="272"
-          height="240"
-          loading="lazy"
-        />
+        <img id="image" src="/images/placeholder.webp" alt="Curso sem imagem" width="272" height="240" loading="lazy" />
       </picture>
 
       <div class="cursemy-card__content-box">
-        <h2 class="cursemy-card__content-title">Como treinar o seu dragão</h2>
+        <div>
+          <h2 class="cursemy-card__content-title">
+            <slot name="title"></slot>
+          </h2>
 
-        <p class="cursemy-card__content-author">Melquíades, Bernardo</p>
+          <p class="cursemy-card__content-author">
+            <slot name="author"></slot>
+          </p>
 
-        <div class="cursemy-card__content-ranking">
-          <div
-            class="cursemy-card__content-ranking-stars"
-            style="--stars: 4.5"
-          ></div>
-          <p class="cursemy-card__content-ranking-count">(675)</p>
+          <div class="cursemy-card__content-ranking">
+            <div class="cursemy-card__content-ranking-stars" style="--stars: 4.5" id="stars-ranking"></div>
+            <p class="cursemy-card__content-ranking-count">
+              (<slot name="rankings"></slot>)
+            </p>
+          </div>
+
+          <p class="cursemy-card__prices">
+            <span class="cursemy-card__prices-discounted">
+              <slot name="price-discounted"></slot>
+            </span>
+            <span class="cursemy-card__prices-full">
+              <slot name="price-full"></slot>
+            </span>
+          </p>
         </div>
-
-        <p class="cursemy-card__prices">
-          <span class="cursemy-card__prices-discounted">R$ 158,90</span>
-          <span class="cursemy-card__prices-full">R$ 228,90</span>
-        </p>
 
         <span class="cursemy-card__button"> + Detalhes </span>
 
-        <a href="/curso/23ahC399sdf32ZWke" class="cursemy-card__link-overlay">
+        <a id="cursemy-card-link" href="/curso/23ahC399sdf32ZWke" class="cursemy-card__link-overlay">
         </a>
       </div>
     </div>
-  </body>
+  </template>
+
+  <header>
+    <h1>Cursemy</h1>
+
+    <button type="button" class="cursemy-cart">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+        <path
+          d="M4.00436 6.41686L0.761719 3.17422L2.17593 1.76001L5.41857 5.00265H20.6603C21.2126 5.00265 21.6603 5.45037 21.6603 6.00265C21.6603 6.09997 21.6461 6.19678 21.6182 6.29L19.2182 14.29C19.0913 14.713 18.7019 15.0027 18.2603 15.0027H6.00436V17.0027H17.0044V19.0027H5.00436C4.45207 19.0027 4.00436 18.5549 4.00436 18.0027V6.41686ZM5.50436 23.0027C4.67593 23.0027 4.00436 22.3311 4.00436 21.5027C4.00436 20.6742 4.67593 20.0027 5.50436 20.0027C6.33279 20.0027 7.00436 20.6742 7.00436 21.5027C7.00436 22.3311 6.33279 23.0027 5.50436 23.0027ZM17.5044 23.0027C16.6759 23.0027 16.0044 22.3311 16.0044 21.5027C16.0044 20.6742 16.6759 20.0027 17.5044 20.0027C18.3328 20.0027 19.0044 20.6742 19.0044 21.5027C19.0044 22.3311 18.3328 23.0027 17.5044 23.0027Z">
+        </path>
+      </svg>
+    </button>
+  </header>
+
+  <main>
+    <cursemy-card stars="3.8" slug="como-treinar-seu-dragao">
+      <span slot="title">Como treinar seu dragão</span>
+      <span slot="author">Melquíades, Roberto</span>
+      <span slot="price-discounted">R$ 156,50</span>
+      <span slot="price-full">R$ 215,00</span>
+      <span slot="rankings">756</span>
+    </cursemy-card>
+
+    <cursemy-card stars="4.75" slug="captura-e-domesticacao-de-fadas-curso-definitivo" highlight>
+      <span slot="title">Captura e Domesticação de fadas: Curso Definitivo</span>
+      <span slot="author">M. Pederneiras, Eustáquio</span>
+      <span slot="price-discounted">R$ 256,45</span>
+      <span slot="price-full">R$ 326,45</span>
+      <span slot="rankings">1856</span>
+    </cursemy-card>
+
+    <cursemy-card stars="5" slug="identificacao-e-classificacao-de-repitilianos">
+      <span slot="title">Identificação e Classificação de Repitilianos</span>
+      <span slot="author">Arboredo, Cláudio</span>
+      <span slot="price-discounted">R$ 56,90</span>
+      <span slot="price-full">R$ 86,90</span>
+      <span slot="rankings">125</span>
+    </cursemy-card>
+
+    <cursemy-card stars="3.8" slug="como-treinar-seu-dragao">
+      <span slot="title">Como treinar seu dragão</span>
+      <span slot="author">Melquíades, Roberto</span>
+      <span slot="price-discounted">R$ 156,50</span>
+      <span slot="price-full">R$ 215,00</span>
+      <span slot="rankings">756</span>
+    </cursemy-card>
+
+    <cursemy-card stars="4.75" slug="captura-e-domesticacao-de-fadas-curso-definitivo" highlight>
+      <span slot="title">Captura e Domesticação de fadas: Curso Definitivo</span>
+      <span slot="author">M. Pederneiras, Eustáquio</span>
+      <span slot="price-discounted">R$ 256,45</span>
+      <span slot="price-full">R$ 326,45</span>
+      <span slot="rankings">1856</span>
+    </cursemy-card>
+
+    <cursemy-card stars="5" slug="identificacao-e-classificacao-de-repitilianos">
+      <span slot="title">Identificação e Classificação de Repitilianos</span>
+      <span slot="author">Arboredo, Cláudio</span>
+      <span slot="price-discounted">R$ 56,90</span>
+      <span slot="price-full">R$ 86,90</span>
+      <span slot="rankings">125</span>
+    </cursemy-card>
+
+    <cursemy-card stars="3.8" slug="como-treinar-seu-dragao">
+      <span slot="title">Como treinar seu dragão</span>
+      <span slot="author">Melquíades, Roberto</span>
+      <span slot="price-discounted">R$ 156,50</span>
+      <span slot="price-full">R$ 215,00</span>
+      <span slot="rankings">756</span>
+    </cursemy-card>
+
+    <cursemy-card stars="4.75" slug="captura-e-domesticacao-de-fadas-curso-definitivo" highlight>
+      <span slot="title">Captura e Domesticação de fadas: Curso Definitivo</span>
+      <span slot="author">M. Pederneiras, Eustáquio</span>
+      <span slot="price-discounted">R$ 256,45</span>
+      <span slot="price-full">R$ 326,45</span>
+      <span slot="rankings">1856</span>
+    </cursemy-card>
+
+    <cursemy-card stars="5" slug="identificacao-e-classificacao-de-repitilianos">
+      <span slot="title">Identificação e Classificação de Repitilianos</span>
+      <span slot="author">Arboredo, Cláudio</span>
+      <span slot="price-discounted">R$ 56,90</span>
+      <span slot="price-full">R$ 86,90</span>
+      <span slot="rankings">125</span>
+    </cursemy-card>
+  </main>
+</body>
+
 </html>
