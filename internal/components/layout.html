@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}}</title>
+    <style>
+      @font-face {
+        font-family: "SN Pro";
+        font-style: normal;
+        font-weight: 200 900;
+        font-display: swap;
+        src: url(/fonts/snpro.woff2) format("woff2");
+      }
+
+      :root {
+        --background-dark: #333333;
+        --background-surface-dark-light: rgba(255, 255, 255, 0.05);
+        --background-surface-dark: transparent;
+        --foreground-dark: #fffcf0;
+
+        --shadow-base: 0 4px 10px rgba(0, 0, 0, 0.25);
+      }
+
+      html {
+        scroll-timeline: --main-timeline;
+      }
+
+      html,
+      body {
+        width: 100vw;
+        min-height: 100%;
+        background-color: var(--background-dark);
+      }
+
+      * {
+        font-family: "SN Pro", sans-serif;
+        color: var(--foreground-dark);
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      body > header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 0;
+        gap: 16px;
+        margin: 0 auto;
+        z-index: 600;
+
+        > h1 {
+          font-weight: 300;
+          font-size: 32px;
+          line-height: 40px;
+          text-transform: uppercase;
+        }
+      }
+
+      .cursemy-cart {
+        color: var(--foreground-dark);
+        background: var(--background-surface-dark);
+        border: 1px solid var(--background-surface-dark-light);
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 200ms ease-in-out;
+
+        &:hover {
+          background: var(--background-surface-dark-light);
+        }
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: 272px;
+        grid-template-rows: auto;
+        gap: 32px;
+      }
+
+      @media (min-width: 768px) {
+        body > header {
+          padding: 64px 0;
+        }
+
+        main {
+          grid-template-columns: repeat(2, 272px);
+        }
+      }
+
+      @media (min-width: 1024px) {
+        main {
+          grid-template-columns: repeat(3, 272px);
+        }
+      }
+    </style>
+
+    <script src="/scripts/cursemy-card.element.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <h1>Cursemy</h1>
+
+      <button type="button" class="cursemy-cart">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          width="16"
+          height="16"
+        >
+          <path
+            d="M4.00436 6.41686L0.761719 3.17422L2.17593 1.76001L5.41857 5.00265H20.6603C21.2126 5.00265 21.6603 5.45037 21.6603 6.00265C21.6603 6.09997 21.6461 6.19678 21.6182 6.29L19.2182 14.29C19.0913 14.713 18.7019 15.0027 18.2603 15.0027H6.00436V17.0027H17.0044V19.0027H5.00436C4.45207 19.0027 4.00436 18.5549 4.00436 18.0027V6.41686ZM5.50436 23.0027C4.67593 23.0027 4.00436 22.3311 4.00436 21.5027C4.00436 20.6742 4.67593 20.0027 5.50436 20.0027C6.33279 20.0027 7.00436 20.6742 7.00436 21.5027C7.00436 22.3311 6.33279 23.0027 5.50436 23.0027ZM17.5044 23.0027C16.6759 23.0027 16.0044 22.3311 16.0044 21.5027C16.0044 20.6742 16.6759 20.0027 17.5044 20.0027C18.3328 20.0027 19.0044 20.6742 19.0044 21.5027C19.0044 22.3311 18.3328 23.0027 17.5044 23.0027Z"
+          ></path>
+        </svg>
+      </button>
+    </header>
+
+    <main>{{content}}</main>
+  </body>
+</html>

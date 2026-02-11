@@ -1,0 +1,213 @@
+<template id="cursemy-card">
+  <style>
+    :host {
+      display: block;
+      justify-self: stretch;
+      align-self: stretch;
+    }
+
+    .cursemy-card {
+      max-width: 272px;
+      width: 272px;
+      height: 100%;
+      background: var(--background-surface-dark);
+      border-radius: 4px;
+      position: relative;
+      border: 1px solid var(--background-surface-dark-light);
+      cursor: pointer;
+      transition: all 200ms ease-in-out;
+      anchor-name: --cursemy-card;
+
+      &.--highlight {
+        border-color: #c4c4c4;
+
+        &::before {
+          content: "mais vendido";
+          display: block;
+          padding: 4px 8px;
+          color: #333333;
+          background: #c4c4c4;
+          font-size: 12px;
+          font-weight: 500;
+          text-transform: uppercase;
+          border-radius: 4px;
+          position: absolute;
+          top: anchor(--cursemy-card top);
+          right: 16px;
+          width: max-content;
+          z-index: 3;
+          transform: translateY(-50%);
+        }
+      }
+
+      &:hover {
+        background: var(--background-surface-dark-light);
+
+        .cursemy-card__image-box > img {
+          opacity: 1;
+          filter: brightness(110%);
+        }
+      }
+
+      &.--loading::after {
+        background: var(--background-surface-dark-light);
+        filter: blur(2px);
+      }
+    }
+
+    .cursemy-card__content-box {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: space-between;
+      padding: 16px;
+      margin-top: -64px;
+      height: calc(100% - 245px + 32px);
+
+      > div:first-child > * {
+        padding: 0;
+        margin: 0;
+      }
+    }
+
+    .cursemy-card__image-box > img {
+      mask-image: linear-gradient(black, transparent);
+      opacity: 0.75;
+      transition: all 200ms ease-in-out;
+      border-radius: 4px 4px 0 0;
+      filter: brightness(95%);
+    }
+
+    .cursemy-card__link-overlay {
+      position: absolute;
+      inset: 0;
+      background: transparent;
+      z-index: 4;
+    }
+
+    .cursemy-card__button {
+      display: block;
+      width: 100%;
+      margin-top: 16px;
+      background-color: white;
+      color: #333333;
+      font-weight: 500;
+      text-align: center;
+      padding: 8px 0;
+      border-radius: 4px;
+    }
+
+    .cursemy-card__prices {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+    }
+
+    .cursemy-card__prices-discounted {
+      font-weight: 500;
+    }
+
+    .cursemy-card__prices-full {
+      text-decoration: line-through;
+      opacity: 0.7;
+      font-size: 10px;
+    }
+
+    .cursemy-card__content-ranking {
+      font-size: 10px;
+      display: flex;
+    }
+
+    .cursemy-card__content-ranking-stars {
+      --stars: 0;
+
+      display: block;
+      position: relative;
+      width: 80.81px;
+      height: 22px;
+      padding: 8px 0 0 0;
+      margin-right: 8px;
+
+      &::before {
+        content: " ";
+        background: url(/images/stars-empty.png);
+        background-size: 80.81px 14px;
+        width: 80.81px;
+        height: 14px;
+        opacity: 0.6;
+        position: absolute;
+        top: 8px;
+        left: 0;
+      }
+
+      &::after {
+        --stars-perc: var(--stars) * 100 / 5;
+
+        content: " ";
+        background: url(/images/stars-filled.png);
+        background-size: 80.81px 14px;
+        width: calc(var(--stars-perc) * 1%);
+        height: 14px;
+        opacity: 0.6;
+        position: absolute;
+        top: 8px;
+        left: 0;
+      }
+    }
+  </style>
+
+  <div class="cursemy-card --loading">
+    <picture class="cursemy-card__image-box">
+      <img
+        id="image"
+        src="/images/placeholder.webp"
+        alt="Curso sem imagem"
+        width="272"
+        height="240"
+        loading="lazy"
+      />
+    </picture>
+
+    <div class="cursemy-card__content-box">
+      <div>
+        <h2 class="cursemy-card__content-title">
+          <slot name="title"></slot>
+        </h2>
+
+        <p class="cursemy-card__content-author">
+          <slot name="author"></slot>
+        </p>
+
+        <div class="cursemy-card__content-ranking">
+          <div
+            class="cursemy-card__content-ranking-stars"
+            style="--stars: 4.5"
+            id="stars-ranking"
+          ></div>
+          <p class="cursemy-card__content-ranking-count">
+            (<slot name="rankings"></slot>)
+          </p>
+        </div>
+
+        <p class="cursemy-card__prices">
+          <span class="cursemy-card__prices-discounted">
+            <slot name="price-discounted"></slot>
+          </span>
+          <span class="cursemy-card__prices-full">
+            <slot name="price-full"></slot>
+          </span>
+        </p>
+      </div>
+
+      <span class="cursemy-card__button"> + Detalhes </span>
+
+      <a
+        id="cursemy-card-link"
+        href="/curso/23ahC399sdf32ZWke"
+        class="cursemy-card__link-overlay"
+      >
+      </a>
+    </div>
+  </div>
+</template>
