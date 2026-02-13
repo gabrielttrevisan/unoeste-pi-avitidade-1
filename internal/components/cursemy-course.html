@@ -154,6 +154,80 @@
       place-items: flex-start;
       place-content: center;
     }
+
+    .form-buy {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: stretch;
+      gap: 0;
+    }
+
+    .form__field {
+      display: flex;
+      gap: 0;
+      margin-bottom: 4px;
+    }
+
+    [class*="form-field__number-"] {
+      height: 34px;
+      width: 34px;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 18px;
+      background: white;
+      color: #333;
+      font-family: "SN Pro", sans-serif;
+    }
+
+    .form-field__number-sub {
+      border-radius: 4px 0 0 4px;
+    }
+
+    .form-field__number-add {
+      border-radius: 0 4px 4px 0;
+    }
+
+    .form-field__input {
+      height: 32px;
+      width: 100%;
+      flex: 1;
+      color: white;
+      background: #333333;
+      font-weight: 500;
+      line-height: 30px;
+      border: 1px solid white;
+      padding: 0;
+      text-align: center;
+      font-family: "SN Pro", sans-serif;
+    }
+
+    .form__submit {
+      min-height: 34px;
+      font-size: 16px;
+      font-weight: 400;
+      border-radius: 4px;
+      background: white;
+      color: #333333;
+      width: 100%;
+      margin: 0;
+      border: 0;
+      font-family: "SN Pro", sans-serif;
+      padding: 8px 16px;
+    }
+
+    .form__submit,
+    [class*="form-field__number-"] {
+      transition: all 200ms ease-in-out;
+      cursor: pointer;
+
+      &:hover {
+        background: #cccccc;
+      }
+    }
   </style>
 
   <div class="cursemy-card --loading">
@@ -209,6 +283,28 @@
           <dt>Vagas:</dt>
           <dd><slot name="vacancies"></slot></dd>
         </dl>
+
+        <form class="form-buy" novalidate>
+          <div class="form__field">
+            <button type="button" class="form-field__number-sub">-</button>
+            <input
+              type="text"
+              class="form-field__input"
+              readonly
+              value="1"
+              name="quantity"
+            />
+            <button type="button" class="form-field__number-add">+</button>
+          </div>
+
+          <input type="hidden" name="total" value="0" />
+          <input type="hidden" name="slug" value="0" />
+
+          <button class="form__submit" type="submit" disabled>
+            Reservar <output class="form__output-vacancies">1</output> por
+            <output class="form__output-total">R$ 00,00</output>
+          </button>
+        </form>
       </div>
     </div>
   </div>

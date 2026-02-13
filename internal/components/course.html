@@ -1,12 +1,12 @@
 <style>
   .course-content {
     display: grid;
-    grid-template-columns: 352px calc(61vw - 352px);
+    grid-template-columns: 352px 1fr;
     grid-template-rows: auto;
     margin: 0 auto;
     gap: 32px;
     width: max-content;
-    max-width: 812px;
+    max-width: 1024px;
   }
 </style>
 
@@ -15,6 +15,8 @@
     slug="{{COURSE_SLUG}}"
     highlight="{{COURSE_HIGHLIGHT}}"
     stars="{{COURSE_STARS}}"
+    discounted-price="{{COURSE_PRICE}}"
+    vacancies="{{COURSE_VACANCIES}}"
   >
     <span slot="title">{{COURSE_TITLE}}</span>
     <span slot="author">{{COURSE_AUTHOR}}</span>

@@ -57,6 +57,7 @@ export default async function handleCourse(req, res) {
     .replaceAll("{{COURSE_HIGHLIGHT}}", course.highlight)
     .replaceAll("{{COURSE_VACANCIES}}", course.vacancies ?? 0)
     .replaceAll("{{COURSE_LEVEL}}", course.level ?? 0)
+    .replaceAll("{{COURSE_PRICE}}", course.price.raw)
     .replaceAll(
       "{{COURSE_DESCRIPTION}}",
       course.description ?? "Lorem ipsum dolor sit amet",

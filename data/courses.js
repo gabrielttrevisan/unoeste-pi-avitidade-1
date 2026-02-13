@@ -5,6 +5,7 @@ const COURSES = {
     price: {
       discounted: "R$ 156,50",
       full: "R$ 215,00",
+      raw: 156.5,
     },
     rankings: {
       stars: 3.8,
@@ -29,7 +30,7 @@ const COURSES = {
     author: "M. Pederneiras, Eustáquio",
     rankings: { stars: 4.75, count: 1856 },
     highlight: true,
-    price: { discounted: "R$ 256.45", full: "R$ 326.45" },
+    price: { discounted: "R$ 256,45", full: "R$ 326,45", raw: 256.45 },
     startAt: "25/05",
     duration: "8 meses",
     vacancies: 8,
@@ -51,7 +52,7 @@ const COURSES = {
     author: "Arboredo, Cláudio",
     rankings: { stars: 5.0, count: 125 },
     highlight: false,
-    price: { discounted: "R$ 56.90", full: "R$ 86.90" },
+    price: { discounted: "R$ 56,90", full: "R$ 86,90", raw: 56.9 },
     startAt: "08/03",
     duration: "uma semana",
     vacancies: 10,
