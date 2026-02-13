@@ -1,0 +1,33 @@
+<style>
+  .course-content {
+    display: grid;
+    grid-template-columns: 272px calc(61vw - 272px);
+    grid-template-rows: auto;
+    margin: 0 auto;
+    gap: 32px;
+    width: max-content;
+    max-width: 812px;
+  }
+</style>
+
+<article class="course-content">
+  <cursemy-card
+    slug="{{COURSE_SLUG}}"
+    highlight="{{COURSE_HIGHLIGHT}}"
+    stars="{{COURSE_STARS}}"
+  >
+    <span slot="title">{{COURSE_TITLE}}</span>
+    <span slot="author">{{COURSE_AUTHOR}}</span>
+    <span slot="price-discounted">{{COURSE_FULL_PRICE}}</span>
+    <span slot="price-full">{{COURSE_PRICE_WITH_DISCOUNT}}</span>
+    <span slot="rankings">{{COURSE_RATINGS_COUNT}}</span>
+    <span slot="start-at">{{COURSE_START_AT}}</span>
+    <span slot="duration">{{COURSE_DURATION}}</span>
+  </cursemy-card>
+
+  <div class="course-content__main">
+    <h1 class="course-content__title">{{COURSE_TITLE}}</h1>
+
+    <div class="course-content__description">{{COURSE_DESCRIPTION}}</div>
+  </div>
+</article>
