@@ -1,7 +1,7 @@
 <style>
   .course-content {
     display: grid;
-    grid-template-columns: 272px calc(61vw - 272px);
+    grid-template-columns: 352px calc(61vw - 352px);
     grid-template-rows: auto;
     margin: 0 auto;
     gap: 32px;
@@ -11,7 +11,7 @@
 </style>
 
 <article class="course-content">
-  <cursemy-card
+  <cursemy-course
     slug="{{COURSE_SLUG}}"
     highlight="{{COURSE_HIGHLIGHT}}"
     stars="{{COURSE_STARS}}"
@@ -23,7 +23,9 @@
     <span slot="rankings">{{COURSE_RATINGS_COUNT}}</span>
     <span slot="start-at">{{COURSE_START_AT}}</span>
     <span slot="duration">{{COURSE_DURATION}}</span>
-  </cursemy-card>
+    <span slot="vacancies">{{COURSE_VACANCIES}}</span>
+    <span slot="level">{{COURSE_LEVEL}}</span>
+  </cursemy-course>
 
   <div class="course-content__main">
     <h1 class="course-content__title">{{COURSE_TITLE}}</h1>

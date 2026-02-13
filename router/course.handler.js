@@ -29,13 +29,13 @@ export default async function handleCourse(req, res) {
       message: "Página não encontrada",
     });
 
-  const [layout, cursemyCardTemplate, courseContentRaw] = await Promise.all([
+  const [layout, cursemyCourseTemplate, courseContentRaw] = await Promise.all([
     readFile(
       path.join(__dirname, "../internal/components/layout.html"),
       "utf-8",
     ),
     readFile(
-      path.join(__dirname, "../internal/components/cursemy-card.html"),
+      path.join(__dirname, "../internal/components/cursemy-course.html"),
       "utf-8",
     ),
     readFile(
@@ -55,6 +55,8 @@ export default async function handleCourse(req, res) {
     .replaceAll("{{COURSE_SLUG}}", slug)
     .replaceAll("{{COURSE_STARS}}", course.rankings.stars)
     .replaceAll("{{COURSE_HIGHLIGHT}}", course.highlight)
+    .replaceAll("{{COURSE_VACANCIES}}", course.vacancies ?? 0)
+    .replaceAll("{{COURSE_LEVEL}}", course.level ?? 0)
     .replaceAll(
       "{{COURSE_DESCRIPTION}}",
       course.description ?? "Lorem ipsum dolor sit amet",
@@ -62,7 +64,7 @@ export default async function handleCourse(req, res) {
 
   const page = layout
     .replace("{{title}}", `Cursemy - ${course.title}`)
-    .replace("{{content}}", `${cursemyCardTemplate}${courseContent}`)
+    .replace("{{content}}", `${cursemyCourseTemplate}${courseContent}`)
     .replace(/\s{2,}/gi, " ");
 
   res.setHeader("Content-Type", "text/html");
