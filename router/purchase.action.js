@@ -48,4 +48,4 @@ export default async function handlePurchaseAction(req, res) {
   res.redirect(`/curso/${slug}`);
 }
 
-export const PURCHASE_ACTION_MATCH = "/purchase/:slug";
+export const PURCHASE_ACTION_MATCH = "/curso/:slug/comprar";
