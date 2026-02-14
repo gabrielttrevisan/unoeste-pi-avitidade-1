@@ -1,7 +1,3 @@
-import handleErrorPage from "./error.page.js";
-import COURSES from "../data/courses.js";
-import USERS from "../data/users.js";
-
 /**
  *
  * @param {import("express").Request} req

@@ -1,5 +1,4 @@
 import handleErrorPage from "./error.page.js";
-import COURSES from "../data/courses.js";
 import USERS from "../data/users.js";
 
 /**
@@ -22,7 +21,7 @@ export default async function handleSignInAction(req, res) {
       message: "Requisição inválida",
     });
 
-  const user = USERS[email];
+  const user = USERS.get(email);
 
   if (!user || user.pass !== password) return res.redirect("/sign-in");
 

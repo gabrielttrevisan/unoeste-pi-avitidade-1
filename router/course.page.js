@@ -30,7 +30,7 @@ export default async function handleCoursePage(req, res) {
       message: "Página não encontrada",
     });
 
-  const [cursemyCourseTemplate, courseContentRaw] = await Promise.all([
+  const [cursemyCourseTemplate, courseContent] = await Promise.all([
     readFile(
       path.join(__dirname, "../internal/components/cursemy-course.html"),
       "utf-8",
@@ -41,28 +41,26 @@ export default async function handleCoursePage(req, res) {
     ),
   ]);
 
-  const courseContent = courseContentRaw
-    .replaceAll("{{COURSE_TITLE}}", course.title)
-    .replaceAll("{{COURSE_AUTHOR}}", course.author)
-    .replaceAll("{{COURSE_RATINGS_COUNT}}", course.rankings.count)
-    .replaceAll("{{COURSE_FULL_PRICE}}", course.price.full)
-    .replaceAll("{{COURSE_PRICE_WITH_DISCOUNT}}", course.price.discounted)
-    .replaceAll("{{COURSE_START_AT}}", course.startAt)
-    .replaceAll("{{COURSE_DURATION}}", course.duration)
-    .replaceAll("{{COURSE_STARS}}", course.rankings.stars)
-    .replaceAll("{{COURSE_HIGHLIGHT}}", course.highlight)
-    .replaceAll("{{COURSE_VACANCIES}}", course.vacancies ?? 0)
-    .replaceAll("{{COURSE_LEVEL}}", course.level ?? 0)
-    .replaceAll("{{COURSE_PRICE}}", course.price.raw)
-    .replaceAll(
-      "{{COURSE_DESCRIPTION}}",
-      course.description ?? "Lorem ipsum dolor sit amet",
-    );
-
   const page = await PageBuilder.fromRequest(req)
     .setTitle(`Cursemy - ${course.title}`)
     .setContent(`${cursemyCourseTemplate}${courseContent}`)
     .replace("{{COURSE_SLUG}}", slug)
+    .replace("{{COURSE_TITLE}}", course.title)
+    .replace("{{COURSE_AUTHOR}}", course.author)
+    .replace("{{COURSE_RATINGS_COUNT}}", course.rankings.count)
+    .replace("{{COURSE_FULL_PRICE}}", course.price.full)
+    .replace("{{COURSE_PRICE_WITH_DISCOUNT}}", course.price.discounted)
+    .replace("{{COURSE_START_AT}}", course.startAt)
+    .replace("{{COURSE_DURATION}}", course.duration)
+    .replace("{{COURSE_STARS}}", course.rankings.stars)
+    .replace("{{COURSE_HIGHLIGHT}}", course.highlight)
+    .replace("{{COURSE_VACANCIES}}", course.vacancies ?? 0)
+    .replace("{{COURSE_LEVEL}}", course.level ?? 0)
+    .replace("{{COURSE_PRICE}}", course.price.raw)
+    .replace(
+      "{{COURSE_DESCRIPTION}}",
+      course.description ?? "Lorem ipsum dolor sit amet",
+    )
     .mount();
 
   res.setHeader("Content-Type", "text/html");

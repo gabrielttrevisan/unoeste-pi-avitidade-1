@@ -48,15 +48,15 @@ export default class PageBuilder {
   }
 
   /**
-   *
+   * The replacement runs always after the layout+content mounting
    * @param {string} key
    * @param {string} value
    * @returns {PageBuilder}
    */
   replace(key, value) {
-    if (typeof value !== "string" || typeof key !== "string") return;
+    if (typeof key !== "string") return this;
 
-    this.#replacements.set(key, value);
+    this.#replacements.set(key, value ?? "");
 
     return this;
   }
@@ -101,7 +101,10 @@ export default class PageBuilder {
 
       return value
         .replaceAll(AUTH_LINK, signInButton)
-        .replaceAll(AUTH_LINK_TEXT, `<a href="/sign-in">ENTRAR</a>`);
+        .replaceAll(
+          AUTH_LINK_TEXT,
+          `<a href="/sign-in">ENTRAR</a><a href="/sign-up">CADASTRAR-SE</a>`,
+        );
     }
   }
 }

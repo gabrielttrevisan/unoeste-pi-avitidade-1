@@ -5,13 +5,16 @@
  */
 
 /**
- * @type {Record<string, User>}
+ * @type {Map.<string, User>}
  */
-const USERS = {
-  "admin@teste.com": {
-    name: "Almirante Patacoada",
-    pass: "123456",
-  },
-};
+const USERS = new Map([
+  [
+    "admin@teste.com",
+    {
+      name: "Almirante Patacoada",
+      pass: "123456",
+    },
+  ],
+]);
 
 export default USERS;

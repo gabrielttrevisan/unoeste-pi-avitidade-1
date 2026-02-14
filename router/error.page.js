@@ -18,10 +18,6 @@ export default async function handleErrorPage(
 ) {
   const [error] = await Promise.all([
     readFile(
-      path.join(__dirname, "../internal/components/layout.html"),
-      "utf-8",
-    ),
-    readFile(
       path.join(__dirname, "../internal/components/error.html"),
       "utf-8",
     ),

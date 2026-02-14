@@ -18,6 +18,12 @@ import auth from "./middleware/auth.js";
 import handleSignOutAction, {
   SIGN_OUT_ACTION_MATCH,
 } from "./router/sign-out.action.js";
+import handleSignUpPage, {
+  SIGN_UP_ROUTE_MATCH,
+} from "./router/sign-up.page.js";
+import handleSignUpAction, {
+  SIGN_UP_ACTION_MATCH,
+} from "./router/sign-up.action.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -50,6 +56,7 @@ app.use(
 app.get(HOME_ROUTE_MATCH, handleHomePage);
 app.get(COURSE_ROUTE_MATCH, auth, handleCoursePage);
 app.get(SIGN_IN_ROUTE_MATCH, handleSignInPage);
+app.get(SIGN_UP_ROUTE_MATCH, handleSignUpPage);
 
 app.get(SIGN_OUT_ACTION_MATCH, auth, handleSignOutAction);
 
@@ -62,6 +69,7 @@ app.use(
 
 app.post(PURCHASE_ACTION_MATCH, auth, handlePurchaseAction);
 app.post(SIGN_IN_ACTION_MATCH, handleSignInAction);
+app.post(SIGN_UP_ACTION_MATCH, handleSignUpAction);
 
 app.use((req, res) => {
   handleErrorPage(req, res, { code: 404, message: "Página não encontrada" });
