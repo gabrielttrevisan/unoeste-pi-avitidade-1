@@ -1,0 +1,35 @@
+.course-content {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto;
+  margin: 0 auto;
+  gap: 32px;
+  width: 100%;
+  max-width: 100vw;
+}
+
+.course-content__main {
+  padding: 0 32px;
+  margin-bottom: 200px;
+}
+
+.course-content__title {
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .course-content {
+    grid-template-columns: 352px 1fr;
+    width: max-content;
+    max-width: 1024px;
+  }
+
+  .course-content__main {
+    padding: 0;
+    margin-bottom: 0;
+  }
+
+  .course-content__title {
+    text-align: left;
+  }
+}

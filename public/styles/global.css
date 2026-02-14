@@ -1,0 +1,188 @@
+@font-face {
+  font-family: "SN Pro";
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url(/fonts/snpro.woff2) format("woff2");
+}
+
+:root {
+  --background-dark: #333333;
+  --background-surface-dark-light: rgba(255, 255, 255, 0.05);
+  --background-surface-dark: transparent;
+  --foreground-dark: #fffcf0;
+
+  --shadow-base: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+html {
+  scroll-timeline: --main-timeline;
+}
+
+html,
+body {
+  width: 100vw;
+  min-height: 100%;
+  background-color: var(--background-dark);
+}
+
+* {
+  font-family: "SN Pro", sans-serif;
+  color: var(--foreground-dark);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+body > header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0;
+  gap: 16px;
+  margin: 0 auto;
+  z-index: 600;
+}
+
+.cursemy-logo {
+  text-decoration: none;
+  anchor-name: --cursemy-logo;
+
+  &::after {
+    content: " ";
+    width: 50%;
+    height: 1.5px;
+    position: absolute;
+    top: achor(bottom --cursemy-logo);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.8) 32%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    z-index: -1;
+  }
+
+  > h1 {
+    font-weight: 300;
+    font-size: 32px;
+    line-height: 40px;
+    text-transform: uppercase;
+  }
+}
+
+main {
+  width: 100%;
+}
+
+.cursemy-user {
+  color: var(--foreground-dark);
+  background: var(--background-surface-dark);
+  border: 1px solid var(--background-surface-dark-light);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+  position: relative;
+
+  &:hover {
+    background: var(--background-surface-dark-light);
+  }
+}
+
+.cursemies {
+  display: grid;
+  grid-template-columns: 272px;
+  grid-template-rows: auto;
+  gap: 32px;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  body > header {
+    padding: 64px 0;
+  }
+
+  .cursemies {
+    grid-template-columns: repeat(2, 272px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .cursemies {
+    grid-template-columns: repeat(3, 272px);
+  }
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 64px 32px;
+
+  nav {
+    --footer-nav-gap: 16px;
+
+    display: flex;
+    gap: var(--footer-nav-gap);
+
+    > a {
+      text-decoration: none;
+      display: flex;
+      gap: var(--footer-nav-gap);
+
+      &::after {
+        content: "|";
+        display: block;
+        opacity: 0.75;
+        color: white;
+      }
+
+      &:last-child::after {
+        content: "";
+        display: none;
+      }
+    }
+  }
+
+  > p {
+    font-size: 14px;
+
+    > a,
+    > span {
+      opacity: 0.45;
+    }
+
+    a {
+      transition: all 200ms ease-in-out;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}

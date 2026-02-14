@@ -23,7 +23,7 @@ export default async function handleHomePage(req, res) {
   PageBuilder.create(req, res)
     .setTitle("Cursemy")
     .setContent(`${cursemyCardTemplate}${data}`)
-    .mountAndSend();
+    .render();
 }
 
 export const HOME_ROUTE_MATCH = "";

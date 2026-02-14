@@ -3,7 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import handleErrorPage from "./error.page.js";
 import COURSES from "../data/courses.js";
-import PageBuilder from "../internal/builder/page.js";
+import HTMLContent from "../internal/builder/page.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -41,9 +41,10 @@ export default async function handleCoursePage(req, res) {
     ),
   ]);
 
-  PageBuilder.create(req, res)
+  HTMLContent.create(req, res)
     .setTitle(`Cursemy - ${course.title}`)
     .setContent(`${cursemyCourseTemplate}${courseContent}`)
+    .stylesheet("course")
     .replace("{{COURSE_SLUG}}", slug)
     .replace("{{COURSE_TITLE}}", course.title)
     .replace("{{COURSE_AUTHOR}}", course.author)
@@ -61,7 +62,7 @@ export default async function handleCoursePage(req, res) {
       "{{COURSE_DESCRIPTION}}",
       course.description ?? "Lorem ipsum dolor sit amet",
     )
-    .mountAndSend();
+    .render();
 }
 
 export const COURSE_ROUTE_MATCH = "/curso/:slug";

@@ -10,20 +10,21 @@ const AUTH_LINK_TEXT = "{{AUTH_LINK_TEXT}}";
 const METADATA_TITLE = "{{TITLE}}";
 const CONTENT = "{{CONTENT}}";
 
-export default class PageBuilder {
+export default class HTMLContent {
   /**
    * @param {import("express").Request} req
    * @param {import("express").Response} res
-   * @returns {PageBuilder}
+   * @returns {HTMLContent}
    */
   static create(req, res) {
-    return new PageBuilder(req, res);
+    return new HTMLContent(req, res);
   }
 
   #isUserSignedIn = false;
   #title = "Cursemy";
   #content = "";
   #replaceAfter = new Map();
+  #styles = new Set();
 
   /**
    * @type {import("express").Response} res
@@ -55,10 +56,18 @@ export default class PageBuilder {
     return this;
   }
 
+  stylesheet(path) {
+    if (typeof path !== "string") return;
+
+    this.#styles.add(`<link rel="stylesheet" href="/styles/${path}.css">`);
+
+    return this;
+  }
+
   /**
    * @param {string} key
    * @param {string} value
-   * @returns {PageBuilder}
+   * @returns {HTMLContent}
    */
   replace(key, value) {
     if (typeof key !== "string") return this;
@@ -68,7 +77,7 @@ export default class PageBuilder {
     return this;
   }
 
-  async mountAndSend() {
+  async render() {
     const mounted = await this.mount();
 
     this.#res.setHeader("Content-Type", "text/html");
@@ -87,9 +96,13 @@ export default class PageBuilder {
     const withContent = layout.replaceAll(CONTENT, this.#content);
     const withTitle = withContent.replaceAll(METADATA_TITLE, this.#title);
     const withAuthLink = await this.#mountAuthLink(withTitle);
+    const withStyles = withAuthLink.replaceAll(
+      "{{STYLES}}",
+      Array.from(this.#styles).join("") || "",
+    );
     const replacedKeys = Array.from(this.#replaceAfter.entries()).reduce(
       (prev, [key, value]) => prev.replaceAll(key, value),
-      withAuthLink,
+      withStyles,
     );
 
     return replacedKeys.replace(/\s{2,}/gi, " ");

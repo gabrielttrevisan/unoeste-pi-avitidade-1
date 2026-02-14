@@ -8,7 +8,7 @@ const COURSES = {
       raw: 156.5,
     },
     rankings: {
-      stars: 3.8,
+      stars: 3.2,
       count: 756,
     },
     startAt: "10/04",
@@ -28,7 +28,7 @@ const COURSES = {
   "captura-e-domesticacao-de-fadas-curso-definitivo": {
     title: "Captura e Domesticação de fadas: Curso Definitivo",
     author: "M. Pederneiras, Eustáquio",
-    rankings: { stars: 4.75, count: 1856 },
+    rankings: { stars: 4.5, count: 1856 },
     highlight: true,
     price: { discounted: "R$ 256,45", full: "R$ 326,45", raw: 256.45 },
     startAt: "25/05",

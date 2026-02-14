@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
-import PageBuilder from "../internal/builder/page.js";
+import HTMLContent from "../internal/builder/page.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,10 +19,11 @@ export default async function handleSignUpPage(req, res) {
     ),
   ]);
 
-  PageBuilder.create(req, res)
+  HTMLContent.create(req, res)
     .setTitle("Cursemy - Acesse sua conta")
     .setContent(signUpContent)
-    .mountAndSend();
+    .stylesheet("sign-up")
+    .render();
 }
 
 export const SIGN_UP_ROUTE_MATCH = "/sign-up";
