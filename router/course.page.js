@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import handleErrorPage from "./error.page.js";
 import COURSES from "../data/courses.js";
+import PageBuilder from "../internal/builder/page.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,11 +30,7 @@ export default async function handleCoursePage(req, res) {
       message: "Página não encontrada",
     });
 
-  const [layout, cursemyCourseTemplate, courseContentRaw] = await Promise.all([
-    readFile(
-      path.join(__dirname, "../internal/components/layout.html"),
-      "utf-8",
-    ),
+  const [cursemyCourseTemplate, courseContentRaw] = await Promise.all([
     readFile(
       path.join(__dirname, "../internal/components/cursemy-course.html"),
       "utf-8",
@@ -62,11 +59,11 @@ export default async function handleCoursePage(req, res) {
       course.description ?? "Lorem ipsum dolor sit amet",
     );
 
-  const page = layout
-    .replace("{{title}}", `Cursemy - ${course.title}`)
-    .replace("{{content}}", `${cursemyCourseTemplate}${courseContent}`)
-    .replaceAll("{{COURSE_SLUG}}", slug)
-    .replace(/\s{2,}/gi, " ");
+  const page = await PageBuilder.fromRequest(req)
+    .setTitle(`Cursemy - ${course.title}`)
+    .setContent(`${cursemyCourseTemplate}${courseContent}`)
+    .replace("{{COURSE_SLUG}}", slug)
+    .mount();
 
   res.setHeader("Content-Type", "text/html");
   res.status(200).send(page);

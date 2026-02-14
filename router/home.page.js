@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
+import PageBuilder from "../internal/builder/page.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,12 +11,8 @@ const __dirname = path.dirname(__filename);
  * @param {import("express").Request} req
  * @param {import("express").Response} res
  */
-export default async function handleHomePage(_, res) {
-  const [layout, cursemyCardTemplate, data] = await Promise.all([
-    readFile(
-      path.join(__dirname, "../internal/components/layout.html"),
-      "utf-8",
-    ),
+export default async function handleHomePage(req, res) {
+  const [cursemyCardTemplate, data] = await Promise.all([
     readFile(
       path.join(__dirname, "../internal/components/cursemy-card.html"),
       "utf-8",
@@ -23,10 +20,10 @@ export default async function handleHomePage(_, res) {
     readFile(path.join(__dirname, "../internal/data/home.html"), "utf-8"),
   ]);
 
-  const page = layout
-    .replace("{{title}}", "Cursemy")
-    .replace("{{content}}", `${cursemyCardTemplate}${data}`)
-    .replace(/\s{2,}/gi, " ");
+  const page = await PageBuilder.fromRequest(req)
+    .setTitle("Cursemy")
+    .setContent(`${cursemyCardTemplate}${data}`)
+    .mount();
 
   res.setHeader("Content-Type", "text/html");
   res.status(200).send(page);
