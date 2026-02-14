@@ -284,6 +284,15 @@
       border: 0;
       font-family: "SN Pro", sans-serif;
       padding: 8px 16px;
+
+      &:disabled {
+        opacity: 0.8;
+        cursor: not-allowed;
+
+        &:hover {
+          background: #c4c4c4;
+        }
+      }
     }
 
     .form__submit,
@@ -347,11 +356,16 @@
           <dt>Nível:</dt>
           <dd><slot name="level"></slot></dd>
 
-          <dt>Vagas:</dt>
+          <dt>Vagas Disponíveis:</dt>
           <dd><slot name="vacancies"></slot></dd>
         </dl>
 
-        <form class="form-buy" novalidate>
+        <form
+          class="form-buy"
+          novalidate
+          method="post"
+          action="/purchase/{{COURSE_SLUG}}"
+        >
           <div class="form__field">
             <button type="button" class="form-field__number-sub">-</button>
             <input

@@ -1,9 +1,23 @@
 import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
-import handleHomeContent, { HOME_ROUTE_MATCH } from "./router/home.page.js";
-import handleError from "./router/error.page.js";
-import handleCourse, { COURSE_ROUTE_MATCH } from "./router/course.page.js";
+import session from "express-session";
+import handleHomePage, { HOME_ROUTE_MATCH } from "./router/home.page.js";
+import handleErrorPage from "./router/error.page.js";
+import handleCoursePage, { COURSE_ROUTE_MATCH } from "./router/course.page.js";
+import handlePurchaseAction, {
+  PURCHASE_ACTION_MATCH,
+} from "./router/purchase.action.js";
+import handleSignInPage, {
+  SIGN_IN_ROUTE_MATCH,
+} from "./router/sign-in.page.js";
+import handleSignInAction, {
+  SIGN_IN_ACTION_MATCH,
+} from "./router/sign-in.action.js";
+import auth from "./middleware/auth.js";
+import handleSignOutAction, {
+  SIGN_OUT_ACTION_MATCH,
+} from "./router/sign-out.action.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,13 +32,41 @@ app.use(
   }),
 );
 
-app.get(HOME_ROUTE_MATCH, handleHomeContent);
-app.get(COURSE_ROUTE_MATCH, handleCourse);
+const DURATION_24H = 1000 * 60 * 60 * 24;
+
+app.use(
+  session({
+    secret: "amU493JyureF830Ku_sd-23ASkj",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: false,
+      httpOnly: true,
+      maxAge: DURATION_24H,
+    },
+  }),
+);
+
+app.get(HOME_ROUTE_MATCH, handleHomePage);
+app.get(COURSE_ROUTE_MATCH, auth, handleCoursePage);
+app.get(SIGN_IN_ROUTE_MATCH, handleSignInPage);
+
+app.get(SIGN_OUT_ACTION_MATCH, auth, handleSignOutAction);
+
+app.use(
+  express.urlencoded({
+    extended: true,
+    type: "application/x-www-form-urlencoded",
+  }),
+);
+
+app.post(PURCHASE_ACTION_MATCH, auth, handlePurchaseAction);
+app.post(SIGN_IN_ACTION_MATCH, handleSignInAction);
 
 app.use((req, res) => {
-  handleError(req, res, { code: 404, message: "Página não encontrada" });
+  handleErrorPage(req, res, { code: 404, message: "Página não encontrada" });
 });
 
 app.listen(PORT, () => {
-  console.log(`Listening on PORT ${PORT}...`);
+  console.log(`🔥 Listening on PORT ${PORT}...`);
 });
