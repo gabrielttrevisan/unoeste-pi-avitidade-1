@@ -10,12 +10,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.8.0",
+  "packageManager": "pnpm@10.29.3",
   "dependencies": {
     "express": "^5.2.1",
     "express-session": "^1.19.0"
   },
   "engines": {
-    "node": "22.14.0"
+    "node": "24.13.1"
   }
 }

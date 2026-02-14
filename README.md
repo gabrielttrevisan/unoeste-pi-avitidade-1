@@ -23,8 +23,8 @@ Utiliza HTML, CSS e JavaScript com funcionalidade mais recentes, por isso, recom
 
 ### Versões
 
-Versão do Node: 22.14.0
-Gerenciador de pacotes: PNPM 10.8.0
+Versão do Node: [22.14.0](https://nodejs.org/pt-br/download)
+Gerenciador de pacotes: [PNPM 10.29.3](https://pnpm.io/pt/installation)
 
 ### Comandos
 
