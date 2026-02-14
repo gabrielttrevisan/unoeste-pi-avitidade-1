@@ -3,7 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import handleErrorPage from "./error.page.js";
 import COURSES from "../data/courses.js";
-import HTMLContent from "../internal/builder/page.js";
+import HTMLContentBuilder from "../internal/builder/page.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -41,10 +41,10 @@ export default async function handleCoursePage(req, res) {
     ),
   ]);
 
-  HTMLContent.create(req, res)
+  HTMLContentBuilder.create(req, res)
     .setTitle(`Cursemy - ${course.title}`)
     .setContent(`${cursemyCourseTemplate}${courseContent}`)
-    .stylesheet("course")
+    .withStylesheet("course")
     .replace("{{COURSE_SLUG}}", slug)
     .replace("{{COURSE_TITLE}}", course.title)
     .replace("{{COURSE_AUTHOR}}", course.author)

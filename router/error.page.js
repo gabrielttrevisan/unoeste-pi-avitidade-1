@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
-import HTMLContent from "../internal/builder/page.js";
+import HTMLContentBuilder from "../internal/builder/page.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,10 +23,10 @@ export default async function handleErrorPage(
     ),
   ]);
 
-  HTMLContent.create(req, res)
+  HTMLContentBuilder.create(req, res)
     .setTitle(`Cursemy - ${message}`)
     .setContent(errorContent)
-    .stylesheet("error")
+    .withStylesheet("error")
     .replace("{{STATUS_CODE}}", code)
     .replace("{{STATUS_MESSAGE}}", message)
     .render();

@@ -10,14 +10,14 @@ const AUTH_LINK_TEXT = "{{AUTH_LINK_TEXT}}";
 const METADATA_TITLE = "{{TITLE}}";
 const CONTENT = "{{CONTENT}}";
 
-export default class HTMLContent {
+export default class HTMLContentBuilder {
   /**
    * @param {import("express").Request} req
    * @param {import("express").Response} res
-   * @returns {HTMLContent}
+   * @returns {HTMLContentBuilder}
    */
   static create(req, res) {
-    return new HTMLContent(req, res);
+    return new HTMLContentBuilder(req, res);
   }
 
   #isUserSignedIn = false;
@@ -56,7 +56,7 @@ export default class HTMLContent {
     return this;
   }
 
-  stylesheet(path) {
+  withStylesheet(path) {
     if (typeof path !== "string") return;
 
     this.#styles.add(`<link rel="stylesheet" href="/styles/${path}.css">`);
@@ -67,7 +67,7 @@ export default class HTMLContent {
   /**
    * @param {string} key
    * @param {string} value
-   * @returns {HTMLContent}
+   * @returns {HTMLContentBuilder}
    */
   replace(key, value) {
     if (typeof key !== "string") return this;
