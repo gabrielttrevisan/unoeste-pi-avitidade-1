@@ -115,7 +115,7 @@ export default class HTMLContentBuilder {
     const withScripts = this.replaceWithSet(
       withStyles,
       "{{SCRIPTS}}",
-      this.#styles,
+      this.#scripts,
     );
     const replacedKeys = Array.from(this.#replaceAfter.entries()).reduce(
       (prev, [key, value]) => prev.replaceAll(key, value),

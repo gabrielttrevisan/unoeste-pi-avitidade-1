@@ -118,6 +118,7 @@ class CursemyCourseElement extends HTMLElement {
 
     if (this.#thumbnail) {
       const imagePath = this.imagePath;
+      const slug = this.slug;
 
       if (imagePath) {
         this.#thumbnail.src = `/images/thumbnails/${imagePath}`;
