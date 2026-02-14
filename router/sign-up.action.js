@@ -41,7 +41,8 @@ export const SIGN_UP_ACTION_MATCH = "/sign-up";
 function isEmailValid(email) {
   return (
     email &&
-    email.match(/([a-z][a-z\-\.0-9]+[a-z0-9])@([a-z][a-z0-9\.][a-z])/i) !== null
+    email.match(/([a-z][a-z\-\.0-9]+[a-z0-9])@([a-z][a-z0-9\.]+[a-z])/i) !==
+      null
   );
 }
 
