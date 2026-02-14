@@ -10,7 +10,6 @@
 
 .course-content__main {
   padding: 0 32px;
-  margin-bottom: 200px;
 }
 
 .course-content__title {
@@ -32,4 +31,8 @@
   .course-content__title {
     text-align: left;
   }
+}
+
+footer {
+  margin-bottom: 150px;
 }

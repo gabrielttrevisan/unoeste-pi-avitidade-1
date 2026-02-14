@@ -22,7 +22,6 @@
       position: relative;
       border: 0;
       anchor-name: --cursemy-card;
-      padding-top: 32px;
 
       &.--highlight {
         &::before {
@@ -30,7 +29,7 @@
           display: block;
           padding: 4px 8px;
           color: #333333;
-          background: #c4c4c4;
+          background: var(--foreground-light-100);
           font-size: 12px;
           font-weight: 500;
           text-transform: uppercase;
@@ -67,7 +66,7 @@
     .cursemy-card__image-box > img {
       border-radius: 4px;
       width: 275px;
-      border: 1px solid #c4c4c4;
+      border: 1px solid var(--foreground-light-100);
       anchor-name: --cursemy-card-image;
     }
 
@@ -75,7 +74,7 @@
       display: block;
       width: 100%;
       margin-top: 16px;
-      background-color: white;
+      background-color: var(--foreground-light-200);
       color: #333333;
       font-weight: 500;
       text-align: center;
@@ -167,7 +166,7 @@
       padding: 16px 32px !important;
       width: 100vw;
       box-sizing: border-box;
-      border-top: 1px solid #c4c4c4;
+      border-top: 1px solid var(--foreground-light-100);
       backdrop-filter: blur(2px);
 
       position: fixed;
@@ -206,7 +205,7 @@
         max-width: 352px;
         width: 352px;
         height: 100%;
-        border: 1px solid #c4c4c4;
+        border: 1px solid var(--foreground-light-100);
         padding-top: 0;
 
         &.--highlight::before {
@@ -245,7 +244,7 @@
       justify-content: center;
       font-weight: 600;
       font-size: 18px;
-      background: #c4c4c4;
+      background: var(--foreground-light-100);
       color: #333;
       font-family: "SN Pro", sans-serif;
     }
@@ -262,11 +261,11 @@
       height: 32px;
       width: 100%;
       flex: 1;
-      color: #c4c4c4;
+      color: var(--foreground-light-100);
       background: transparent;
       font-weight: 500;
       line-height: 30px;
-      border: 1px solid #c4c4c4;
+      border: 1px solid var(--foreground-light-100);
       padding: 0;
       text-align: center;
       font-family: "SN Pro", sans-serif;
@@ -277,7 +276,7 @@
       font-size: 16px;
       font-weight: 400;
       border-radius: 4px;
-      background: #c4c4c4;
+      background: var(--foreground-light-100);
       color: #333333;
       width: 100%;
       margin: 0;
@@ -290,7 +289,7 @@
         cursor: not-allowed;
 
         &:hover {
-          background: #c4c4c4;
+          background: var(--foreground-light-100);
         }
       }
     }
@@ -301,7 +300,7 @@
       cursor: pointer;
 
       &:hover {
-        background: #fff;
+        background: var(--foreground-light-200);
       }
     }
   </style>

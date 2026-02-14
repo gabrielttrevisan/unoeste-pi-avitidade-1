@@ -27,7 +27,7 @@
 .error__go-home {
   padding: 16px 32px;
   border-radius: 4px;
-  background: white;
+  background: var(--foreground-light-200);
   color: #333;
   font-size: 16px;
   margin: 0 auto;

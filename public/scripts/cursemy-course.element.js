@@ -1,7 +1,10 @@
 class CursemyCourseElement extends HTMLElement {
+  /** @type {ShadowRoot} */
   #shadow;
   /** @type {HTMLElement|null} */
   #starsElement = null;
+  /** @type {HTMLAnchorElement|null} */
+  #link = null;
   /** @type {HTMLImageElement|null} */
   #thumbnail = null;
   /** @type {HTMLElement|null} */
@@ -52,6 +55,7 @@ class CursemyCourseElement extends HTMLElement {
     this.#starsElement = this.#shadow.querySelector(
       ".cursemy-card__content-ranking-stars",
     );
+    this.#link = this.#shadow.querySelector("#cursemy-card-link");
     this.#thumbnail = this.#shadow.querySelector(
       ".cursemy-card__image-box img",
     );
@@ -116,9 +120,14 @@ class CursemyCourseElement extends HTMLElement {
       this.#starsElement.style.setProperty("--stars", this.stars.toString());
     }
 
+    const slug = this.slug;
+
+    if (slug && this.#link) {
+      this.#link.href = `/curso/${slug}`;
+    }
+
     if (this.#thumbnail) {
       const imagePath = this.imagePath;
-      const slug = this.slug;
 
       if (imagePath) {
         this.#thumbnail.src = `/images/thumbnails/${imagePath}`;

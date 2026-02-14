@@ -10,7 +10,9 @@
   --background-dark: #333333;
   --background-surface-dark-light: rgba(255, 255, 255, 0.05);
   --background-surface-dark: transparent;
-  --foreground-dark: #fffcf0;
+  --foreground-light-200: #fffcf0;
+  --foreground-light-100: #c4c4c4;
+  --foreground-light-100-50: #c4c4c4aa;
 
   --shadow-base: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
@@ -28,7 +30,7 @@ body {
 
 * {
   font-family: "SN Pro", sans-serif;
-  color: var(--foreground-dark);
+  color: var(--foreground-light-200);
 }
 
 body {
@@ -48,6 +50,13 @@ body > header {
   gap: 16px;
   margin: 0 auto;
   z-index: 600;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #333333aa;
+  backdrop-filter: blur(2px);
+  border-bottom: 1px solid var(--foreground-light-100-50);
 }
 
 .cursemy-logo {
@@ -78,10 +87,11 @@ body > header {
 
 main {
   width: 100%;
+  margin-top: 148px;
 }
 
 .cursemy-user {
-  color: var(--foreground-dark);
+  color: var(--foreground-light-200);
   background: var(--background-surface-dark);
   border: 1px solid var(--background-surface-dark-light);
   border-radius: 50%;
@@ -124,6 +134,12 @@ main {
 @media (min-width: 768px) {
   body > header {
     padding: 64px 0;
+    position: relative;
+    border-bottom: 0;
+  }
+
+  main {
+    margin-top: 0;
   }
 
   .cursemies {
@@ -159,7 +175,7 @@ footer {
         content: "|";
         display: block;
         opacity: 0.75;
-        color: white;
+        color: var(--foreground-light-200);
       }
 
       &:last-child::after {
