@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
-import handleError from "./error.handler.js";
+import handleError from "./error.page.js";
 import COURSES from "../data/courses.js";
 
 const __filename = fileURLToPath(import.meta.url);

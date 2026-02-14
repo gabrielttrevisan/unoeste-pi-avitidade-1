@@ -1,9 +1,9 @@
 import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
-import handleHomeContent, { HOME_ROUTE_MATCH } from "./router/home.handler.js";
-import handleError from "./router/error.handler.js";
-import handleCourse, { COURSE_ROUTE_MATCH } from "./router/course.handler.js";
+import handleHomeContent, { HOME_ROUTE_MATCH } from "./router/home.page.js";
+import handleError from "./router/error.page.js";
+import handleCourse, { COURSE_ROUTE_MATCH } from "./router/course.page.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,6 +14,7 @@ const app = express();
 app.use(
   express.static(path.join(__dirname, "public"), {
     maxAge: 2048 * 1000,
+    cacheControl: true,
   }),
 );
 

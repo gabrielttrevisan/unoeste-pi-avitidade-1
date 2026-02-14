@@ -34,7 +34,7 @@ const COURSES = {
     startAt: "25/05",
     duration: "8 meses",
     vacancies: 8,
-    level: "intermediário",
+    level: "Intermediário",
     description: `
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse accumsan sollicitudin sapien vel hendrerit. Quisque semper venenatis faucibus. Fusce commodo urna quis rutrum sollicitudin. Mauris purus mauris, sodales sit amet nulla feugiat, vehicula feugiat metus. Ut luctus purus ligula, ut sagittis diam semper sed. Quisque vulputate diam vitae venenatis tincidunt. Nunc non finibus ante.
@@ -56,7 +56,7 @@ const COURSES = {
     startAt: "08/03",
     duration: "uma semana",
     vacancies: 10,
-    level: "intermediário",
+    level: "Intermediário",
     description: `
       <p>
         Maecenas eleifend ut tellus eget cursus. Cras ut arcu sed sapien scelerisque cursus. Nullam accumsan sodales ligula, id malesuada libero elementum sed. Phasellus posuere nulla risus, a sollicitudin eros pretium eget. Aenean sed massa malesuada, rutrum magna posuere, consequat nisi. Proin at ultrices nunc, eget scelerisque urna. Fusce et scelerisque urna. Ut id sapien vel quam fermentum accumsan. Phasellus cursus neque nec cursus convallis.

@@ -4,24 +4,27 @@
       display: block;
       justify-self: stretch;
       align-self: stretch;
-      max-width: 352px;
-      min-width: 352px;
-      width: 352px;
+      max-width: 100vw;
+      min-width: 100%;
+      width: 100%;
     }
 
     .cursemy-card {
-      max-width: 352px;
-      width: 352px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-width: 100%;
+      width: 100%;
       height: 100%;
       background: var(--background-surface-dark);
       border-radius: 4px;
       position: relative;
-      border: 1px solid var(--background-surface-dark-light);
+      border: 0;
       anchor-name: --cursemy-card;
+      padding-top: 32px;
 
       &.--highlight {
-        border-color: #c4c4c4;
-
         &::before {
           content: "mais vendido";
           display: block;
@@ -33,10 +36,10 @@
           text-transform: uppercase;
           border-radius: 4px;
           position: absolute;
-          top: anchor(--cursemy-card top);
-          right: 16px;
           width: max-content;
           z-index: 3;
+          top: anchor(--cursemy-card-image top);
+          right: unset;
           transform: translateY(-50%);
         }
       }
@@ -53,20 +56,19 @@
       align-items: stretch;
       justify-content: space-between;
       padding: 16px;
-      margin-top: -64px;
-      height: calc(100% - 245px + 32px);
+      margin-top: 32px;
+      height: auto;
 
       > div:first-child > * {
-        padding: 0;
         margin: 0;
       }
     }
 
     .cursemy-card__image-box > img {
-      mask-image: linear-gradient(black, transparent);
-      border-radius: 4px 4px 0 0;
-      width: 100%;
-      height: auto;
+      border-radius: 4px;
+      width: 275px;
+      border: 1px solid #c4c4c4;
+      anchor-name: --cursemy-card-image;
     }
 
     .cursemy-card__button {
@@ -150,7 +152,7 @@
       padding-top: 16px !important;
       display: grid;
       grid-template-columns: max-content 1fr;
-      grid-template-rows: repeat(10, 30px);
+      grid-template-rows: repeat(8, 30px);
       place-items: flex-start;
       place-content: center;
     }
@@ -158,9 +160,74 @@
     .form-buy {
       display: flex;
       flex-direction: column;
-      align-items: stretch;
-      justify-content: stretch;
+      align-items: center;
+      justify-content: center;
       gap: 0;
+      background: #333333aa;
+      padding: 16px 32px !important;
+      width: 100vw;
+      box-sizing: border-box;
+      border-top: 1px solid #c4c4c4;
+      backdrop-filter: blur(2px);
+
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+
+      > div,
+      > button {
+        width: 100%;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .form-buy {
+        align-items: stretch;
+        justify-content: stretch;
+        padding: 0 !important;
+        position: relative;
+        left: unset;
+        right: unset;
+        bottom: unset;
+        border: 0;
+        width: 100%;
+      }
+
+      .cursemy-card__content-box {
+        flex-direction: column;
+        height: calc(100% - 245px + 32px);
+        margin-top: -64px;
+      }
+
+      .cursemy-card {
+        display: block;
+        grid-template-columns: unset;
+        max-width: 352px;
+        width: 352px;
+        height: 100%;
+        border: 1px solid #c4c4c4;
+        padding-top: 0;
+
+        &.--highlight::before {
+          top: anchor(--cursemy-card top);
+          right: 16px;
+          transform: translateY(-50%);
+        }
+      }
+
+      :host {
+        max-width: 352px;
+        min-width: 352px;
+        width: 352px;
+      }
+
+      .cursemy-card__image-box > img {
+        width: 100%;
+        height: auto;
+        mask-image: linear-gradient(black, transparent);
+        border: 0;
+      }
     }
 
     .form__field {
@@ -178,7 +245,7 @@
       justify-content: center;
       font-weight: 600;
       font-size: 18px;
-      background: white;
+      background: #c4c4c4;
       color: #333;
       font-family: "SN Pro", sans-serif;
     }
@@ -195,11 +262,11 @@
       height: 32px;
       width: 100%;
       flex: 1;
-      color: white;
-      background: #333333;
+      color: #c4c4c4;
+      background: transparent;
       font-weight: 500;
       line-height: 30px;
-      border: 1px solid white;
+      border: 1px solid #c4c4c4;
       padding: 0;
       text-align: center;
       font-family: "SN Pro", sans-serif;
@@ -210,7 +277,7 @@
       font-size: 16px;
       font-weight: 400;
       border-radius: 4px;
-      background: white;
+      background: #c4c4c4;
       color: #333333;
       width: 100%;
       margin: 0;
@@ -225,7 +292,7 @@
       cursor: pointer;
 
       &:hover {
-        background: #cccccc;
+        background: #fff;
       }
     }
   </style>

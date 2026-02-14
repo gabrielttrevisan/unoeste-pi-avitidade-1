@@ -240,10 +240,15 @@ class CursemyCourseElement extends HTMLElement {
     this.#submitButton.disabled = false;
   }
 
+  /**
+   * @param {number} value
+   * @returns {string}
+   */
   #maskCurrency(value) {
-    return new Intl.NumberFormat("pt-br", {
+    return value.toLocaleString("pt-BR", {
       currency: "BRL",
-    }).format(value);
+      style: "currency",
+    });
   }
 
   #maskVacancies(value) {
