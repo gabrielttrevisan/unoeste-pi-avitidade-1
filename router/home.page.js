@@ -17,7 +17,7 @@ export default async function handleHomePage(req, res) {
       path.join(__dirname, "../internal/components/cursemy-card.html"),
       "utf-8",
     ),
-    readFile(path.join(__dirname, "../internal/data/home.html"), "utf-8"),
+    readFile(path.join(__dirname, "../internal/components/home.html"), "utf-8"),
   ]);
 
   PageBuilder.create(req, res)
