@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
-import HTMLContentBuilder from "../internal/builder/page.js";
+import HTMLContentBuilder from "../internal/builder/html-content.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

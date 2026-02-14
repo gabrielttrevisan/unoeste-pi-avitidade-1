@@ -25,6 +25,7 @@ export default class HTMLContentBuilder {
   #content = "";
   #replaceAfter = new Map();
   #styles = new Set();
+  #scripts = new Set();
 
   /**
    * @type {import("express").Response} res
@@ -64,6 +65,16 @@ export default class HTMLContentBuilder {
     return this;
   }
 
+  withScript(path) {
+    if (typeof path !== "string") return;
+
+    this.#scripts.add(
+      `<script type="text/javascript" src="/scripts/${path}.js"></script>`,
+    );
+
+    return this;
+  }
+
   /**
    * @param {string} key
    * @param {string} value
@@ -96,16 +107,31 @@ export default class HTMLContentBuilder {
     const withContent = layout.replaceAll(CONTENT, this.#content);
     const withTitle = withContent.replaceAll(METADATA_TITLE, this.#title);
     const withAuthLink = await this.#mountAuthLink(withTitle);
-    const withStyles = withAuthLink.replaceAll(
+    const withStyles = this.replaceWithSet(
+      withAuthLink,
       "{{STYLES}}",
-      Array.from(this.#styles).join("") || "",
+      this.#styles,
+    );
+    const withScripts = this.replaceWithSet(
+      withStyles,
+      "{{SCRIPTS}}",
+      this.#styles,
     );
     const replacedKeys = Array.from(this.#replaceAfter.entries()).reduce(
       (prev, [key, value]) => prev.replaceAll(key, value),
-      withStyles,
+      withScripts,
     );
 
     return replacedKeys.replace(/\s{2,}/gi, " ");
+  }
+
+  /**
+   * @param {string} target
+   * @param {string} key
+   * @param {Set} set
+   */
+  replaceWithSet(target, key, set) {
+    return target.replaceAll(key, Array.from(set).join("") || "");
   }
 
   /**
