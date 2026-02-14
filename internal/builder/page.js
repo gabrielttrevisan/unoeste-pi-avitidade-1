@@ -13,22 +13,30 @@ const CONTENT = "{{CONTENT}}";
 export default class PageBuilder {
   /**
    * @param {import("express").Request} req
+   * @param {import("express").Response} res
    * @returns {PageBuilder}
    */
-  static fromRequest(req) {
-    return new PageBuilder(req);
+  static create(req, res) {
+    return new PageBuilder(req, res);
   }
 
   #isUserSignedIn = false;
   #title = "Cursemy";
   #content = "";
-  #replacements = new Map();
+  #replaceAfter = new Map();
+
+  /**
+   * @type {import("express").Response} res
+   */
+  #res;
 
   /**
    * @param {import("express").Request} req
+   * @param {import("express").Response} res
    */
-  constructor(req) {
+  constructor(req, res) {
     this.#isUserSignedIn = req.session?.isUserSignedIn;
+    this.#res = res;
   }
 
   setContent(value) {
@@ -48,7 +56,6 @@ export default class PageBuilder {
   }
 
   /**
-   * The replacement runs always after the layout+content mounting
    * @param {string} key
    * @param {string} value
    * @returns {PageBuilder}
@@ -56,9 +63,19 @@ export default class PageBuilder {
   replace(key, value) {
     if (typeof key !== "string") return this;
 
-    this.#replacements.set(key, value ?? "");
+    this.#replaceAfter.set(key, value ?? "");
 
     return this;
+  }
+
+  async mountAndSend() {
+    const mounted = await this.mount();
+
+    this.#res.setHeader("Content-Type", "text/html");
+    this.#res.setHeader("Cache-Control", "no-cache");
+    this.#res.status(200);
+
+    this.#res.send(mounted);
   }
 
   async mount() {
@@ -70,7 +87,7 @@ export default class PageBuilder {
     const withContent = layout.replaceAll(CONTENT, this.#content);
     const withTitle = withContent.replaceAll(METADATA_TITLE, this.#title);
     const withAuthLink = await this.#mountAuthLink(withTitle);
-    const replacedKeys = Array.from(this.#replacements.entries()).reduce(
+    const replacedKeys = Array.from(this.#replaceAfter.entries()).reduce(
       (prev, [key, value]) => prev.replaceAll(key, value),
       withAuthLink,
     );

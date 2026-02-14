@@ -16,24 +16,19 @@ export default async function handleErrorPage(
   res,
   { message, code } = {},
 ) {
-  const [error] = await Promise.all([
+  const [errorContent] = await Promise.all([
     readFile(
       path.join(__dirname, "../internal/components/error.html"),
       "utf-8",
     ),
   ]);
 
-  const errorContent = error
-    .replace("{{STATUS_CODE}}", code)
-    .replace("{{STATUS_MESSAGE}}", message);
-
-  const page = await PageBuilder.fromRequest(req)
+  PageBuilder.create(req, res)
     .setTitle(`Cursemy - ${message}`)
     .setContent(errorContent)
-    .mount();
-
-  res.setHeader("Content-Type", "text/html");
-  res.status(200).send(page);
+    .replace("{{STATUS_CODE}}", code)
+    .replace("{{STATUS_MESSAGE}}", message)
+    .mountAndSend();
 }
 
 export const ROUTE_MATCH = "";

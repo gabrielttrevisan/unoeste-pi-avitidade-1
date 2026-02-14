@@ -20,13 +20,10 @@ export default async function handleHomePage(req, res) {
     readFile(path.join(__dirname, "../internal/data/home.html"), "utf-8"),
   ]);
 
-  const page = await PageBuilder.fromRequest(req)
+  PageBuilder.create(req, res)
     .setTitle("Cursemy")
     .setContent(`${cursemyCardTemplate}${data}`)
-    .mount();
-
-  res.setHeader("Content-Type", "text/html");
-  res.status(200).send(page);
+    .mountAndSend();
 }
 
 export const HOME_ROUTE_MATCH = "";

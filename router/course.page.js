@@ -41,7 +41,7 @@ export default async function handleCoursePage(req, res) {
     ),
   ]);
 
-  const page = await PageBuilder.fromRequest(req)
+  PageBuilder.create(req, res)
     .setTitle(`Cursemy - ${course.title}`)
     .setContent(`${cursemyCourseTemplate}${courseContent}`)
     .replace("{{COURSE_SLUG}}", slug)
@@ -61,10 +61,7 @@ export default async function handleCoursePage(req, res) {
       "{{COURSE_DESCRIPTION}}",
       course.description ?? "Lorem ipsum dolor sit amet",
     )
-    .mount();
-
-  res.setHeader("Content-Type", "text/html");
-  res.status(200).send(page);
+    .mountAndSend();
 }
 
 export const COURSE_ROUTE_MATCH = "/curso/:slug";

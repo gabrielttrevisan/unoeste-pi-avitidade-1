@@ -19,13 +19,10 @@ export default async function handleSignInPage(req, res) {
     ),
   ]);
 
-  const page = await PageBuilder.fromRequest(req)
+  PageBuilder.create(req, res)
     .setTitle("Cursemy - Acesse sua conta")
     .setContent(signInContent)
-    .mount();
-
-  res.setHeader("Content-Type", "text/html");
-  res.status(200).send(page);
+    .mountAndSend();
 }
 
 export const SIGN_IN_ROUTE_MATCH = "/sign-in";
