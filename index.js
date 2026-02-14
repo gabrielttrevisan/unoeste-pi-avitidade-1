@@ -24,6 +24,9 @@ import handleSignUpPage, {
 import handleSignUpAction, {
   SIGN_UP_ACTION_MATCH,
 } from "./router/sign-up.action.js";
+import handleTestErrorPage, {
+  TEST_ERROR_ROUTE_MATCH,
+} from "./router/error-test.page.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -57,6 +60,7 @@ app.get(HOME_ROUTE_MATCH, handleHomePage);
 app.get(COURSE_ROUTE_MATCH, auth, handleCoursePage);
 app.get(SIGN_IN_ROUTE_MATCH, handleSignInPage);
 app.get(SIGN_UP_ROUTE_MATCH, handleSignUpPage);
+app.get(TEST_ERROR_ROUTE_MATCH, handleTestErrorPage);
 
 app.get(SIGN_OUT_ACTION_MATCH, auth, handleSignOutAction);
 
@@ -73,6 +77,13 @@ app.post(SIGN_UP_ACTION_MATCH, handleSignUpAction);
 
 app.use((req, res) => {
   handleErrorPage(req, res, { code: 404, message: "Página não encontrada" });
+});
+
+app.use((err, req, res, _next) => {
+  handleErrorPage(req, res, {
+    code: 500,
+    message: err.message || "Erro interno",
+  });
 });
 
 app.listen(PORT, () => {
