@@ -6,6 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const AUTH_LINK = "{{AUTH_LINK}}";
+const AUTH_LINK_TEXT = "{{AUTH_LINK_TEXT}}";
 const METADATA_TITLE = "{{TITLE}}";
 const CONTENT = "{{CONTENT}}";
 
@@ -89,14 +90,18 @@ export default class PageBuilder {
         "utf-8",
       );
 
-      return value.replaceAll(AUTH_LINK, signOutButton);
+      return value
+        .replaceAll(AUTH_LINK, signOutButton)
+        .replaceAll(AUTH_LINK_TEXT, `<a href="/sign-out">SAIR</a>`);
     } else {
       const signInButton = await readFile(
         path.join(__dirname, "../components/sign-in-button.html"),
         "utf-8",
       );
 
-      return value.replaceAll(AUTH_LINK, signInButton);
+      return value
+        .replaceAll(AUTH_LINK, signInButton)
+        .replaceAll(AUTH_LINK_TEXT, `<a href="/sign-in">ENTRAR</a>`);
     }
   }
 }
