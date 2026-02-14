@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
-import PageBuilder from "../internal/builder/page.js";
+import HTMLContentBuilder from "../internal/builder/page.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,7 +20,7 @@ export default async function handleHomePage(req, res) {
     readFile(path.join(__dirname, "../internal/components/home.html"), "utf-8"),
   ]);
 
-  PageBuilder.create(req, res)
+  HTMLContentBuilder.create(req, res)
     .setTitle("Cursemy")
     .setContent(`${cursemyCardTemplate}${data}`)
     .render();
