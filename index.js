@@ -27,10 +27,11 @@ import handleSignUpAction, {
 import handleTestErrorPage, {
   TEST_ERROR_ROUTE_MATCH,
 } from "./router/error-test.page.js";
+import handleAdminPage, { ADMIN_ROUTE_MATCH } from "./router/admin.page.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const PORT = 3004;
+const PORT = 3000;
 
 const app = express();
 
@@ -58,6 +59,7 @@ app.use(
 
 app.get(HOME_ROUTE_MATCH, handleHomePage);
 app.get(COURSE_ROUTE_MATCH, auth, handleCoursePage);
+app.get(ADMIN_ROUTE_MATCH, auth, handleAdminPage);
 app.get(SIGN_IN_ROUTE_MATCH, handleSignInPage);
 app.get(SIGN_UP_ROUTE_MATCH, handleSignUpPage);
 app.get(TEST_ERROR_ROUTE_MATCH, handleTestErrorPage);

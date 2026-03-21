@@ -1,0 +1,62 @@
+<form action="" class="course-form">
+  <div class="form__input">
+    <label for="course-id">ID</label>
+    <input type="text" id="course-id" name="id" disabled />
+  </div>
+
+  <div class="form__input --required">
+    <label for="course-slug">Slug</label>
+    <input type="text" id="course-slug" name="slug" />
+  </div>
+
+  <div class="form__input --required">
+    <label for="course-title">Título</label>
+    <input type="text" id="course-title" name="title" />
+  </div>
+
+  <div class="form__input --required">
+    <label for="course-desc">Descrição</label>
+    <textarea id="course-desc" name="desc"></textarea>
+  </div>
+
+  <div class="form__input --required --group">
+    <label for="course-spots">Vagas</label>
+    <input
+      type="number"
+      id="course-spots"
+      name="availableSpots"
+      min="1"
+      max="999"
+    />
+  </div>
+
+  <div class="form__input --required --group">
+    <label for="course-highlight">É Destaque</label>
+    <input type="checkbox" id="course-highlight" name="isHighlight" />
+  </div>
+
+  <div class="form__input --required --group">
+    <label for="course-duration-count">Duração</label>
+    <input
+      type="number"
+      id="course-duration-count"
+      name="durationCount"
+      min="1"
+      max="99"
+    />
+    <select id="course-duration-period" name="durationPeriod">
+      <option value="hour">Hora</option>
+      <option value="week">Semana</option>
+      <option value="month">Mês</option>
+    </select>
+  </div>
+
+  <div class="form__input --required --group">
+    <label for="course-level">Nível de Conhecimento Exigido</label>
+    <select id="course-level" name="level"></select>
+  </div>
+
+  <div class="form__action">
+    <button type="submit" id="course-submit">ENVIAR</button>
+  </div>
+</form>

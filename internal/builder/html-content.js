@@ -148,7 +148,10 @@ export default class HTMLContentBuilder {
 
       return value
         .replaceAll(AUTH_LINK, signOutButton)
-        .replaceAll(AUTH_LINK_TEXT, `<a href="/sign-out">SAIR</a>`);
+        .replaceAll(
+          AUTH_LINK_TEXT,
+          `<a href="/admin">ADMIN</a>` + `<a href="/sign-out">SAIR</a>`,
+        );
     } else {
       const signInButton = await readFile(
         path.join(__dirname, "../components/sign-in-button.html"),
