@@ -1,3 +1,10 @@
+/**
+ * @typedef {Object} Components
+ * @prop {Toast} toast
+ * @prop {CursemyList} list
+ * @prop {CursemyForm} form
+ */
+
 class Toast {
   #region;
 
@@ -32,17 +39,22 @@ class Toast {
 class CursemyForm {
   /** @type {HTMLFormElement} */
   #form;
-  /** @type {Toast} */
-  #toast;
+  /** @type {Components} */
+  #view;
   #levels;
 
-  constructor(id = "course-form", { toast }) {
+  /**
+   *
+   * @param {string} [id]
+   * @param {Components} view
+   */
+  constructor(id = "course-form", view) {
     const form = document.getElementById(id);
 
     if (!form) throw new Error("Unable to initialize CursemyForm");
 
     this.#form = form;
-    this.#toast = toast;
+    this.#view = view;
     this.#levels = [];
 
     this.#init();
@@ -344,6 +356,8 @@ class CursemyForm {
     if (rawPeriod.match(/(m[êe]s)/)) inputDurPeriod.value = "month";
     else if (rawPeriod.match(/(semana)/)) inputDurPeriod.value = "week";
     else if (rawPeriod.match(/(hora)/)) inputDurPeriod.value = "hour";
+
+    this.#form.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
   /**
@@ -377,26 +391,29 @@ class CursemyForm {
       const submit = this.#form.querySelector("[type='submit']");
       const id = formData.get("id");
 
-      if (!submit) this.#toast.show("Eita, pai. Deu algo errado.", "error");
+      if (!submit)
+        this.#view.toast.show("Eita, pai. Deu algo errado.", "error");
 
       submit.disabled = true;
+
+      const body = JSON.stringify({
+        author: formData.get("author"),
+        description: formData.get("desc"),
+        duration: `${formData.get("durationCount")} ${this.#getDuration(formData.get("durationPeriod"), formData.get("durationCount"))}`,
+        isHighlight: ["true", true, "on"].includes(formData.get("isHighlight")),
+        levelId: parseInt(formData.get("level")),
+        price: parseFloat(formData.get("price")),
+        priceWithDiscount: parseFloat(formData.get("discount")),
+        slug: formData.get("slug"),
+        spotsAvailable: parseInt(formData.get("availableSpots")),
+        startAt: this.#getStartAt(formData.get("startAt")),
+        title: formData.get("title"),
+      });
 
       if (id) {
         fetch("http://localhost:3004/course/" + id, {
           method: "PUT",
-          body: JSON.stringify({
-            author: formData.get("author"),
-            description: formData.get("desc"),
-            duration: `${formData.get("durationCount")} ${this.#getDuration(formData.get("durationPeriod"), formData.get("durationCount"))}`,
-            isHighlight: formData.get("isHighlight") === "true" ? true : false,
-            levelId: parseInt(formData.get("level")),
-            price: parseFloat(formData.get("price")),
-            priceWithDiscount: parseFloat(formData.get("discount")),
-            slug: formData.get("slug"),
-            spotsAvailable: parseInt(formData.get("availableSpots")),
-            startAt: this.#getStartAt(formData.get("startAt")),
-            title: formData.get("title"),
-          }),
+          body,
           headers: {
             "Content-Type": "application/json; charset=utf-8",
           },
@@ -405,31 +422,20 @@ class CursemyForm {
           .then((response) => {
             if (response.error) {
               if (response.error.message)
-                this.#toast.error(response.error.message);
+                this.#view.toast.error(response.error.message);
             } else {
-              this.#toast.success(
+              this.#view.toast.success(
                 `Curso #${id} editado com sucesso.<br/>ID:${response.data.id}`,
               );
-              location.reload();
+              this.#form.reset();
+              this.#view.list.render();
             }
           })
           .finally(() => (submit.disabled = false));
       } else {
         fetch("http://localhost:3004/course", {
           method: "POST",
-          body: JSON.stringify({
-            author: formData.get("author"),
-            description: formData.get("desc"),
-            duration: `${formData.get("durationCount")} ${this.#getDuration(formData.get("durationPeriod"), formData.get("durationCount"))}`,
-            isHighlight: formData.get("isHighlight") === "true" ? true : false,
-            levelId: parseInt(formData.get("level")),
-            price: parseFloat(formData.get("price")),
-            priceWithDiscount: parseFloat(formData.get("discount")),
-            slug: formData.get("slug"),
-            spotsAvailable: parseInt(formData.get("availableSpots")),
-            startAt: this.#getStartAt(formData.get("startAt")),
-            title: formData.get("title"),
-          }),
+          body,
           headers: {
             "Content-Type": "application/json; charset=utf-8",
           },
@@ -438,12 +444,13 @@ class CursemyForm {
           .then((response) => {
             if (response.error) {
               if (response.error.message)
-                this.#toast.error(response.error.message);
+                this.#view.toast.error(response.error.message);
             } else {
-              this.#toast.success(
+              this.#view.toast.success(
                 `Curso criado com sucesso.<br/>ID:${response.data.id}`,
               );
               this.#form.reset();
+              this.#view.list.render();
             }
           })
           .finally(() => (submit.disabled = false));
@@ -454,24 +461,33 @@ class CursemyForm {
 
 class CursemyList {
   #tableBody;
-  /** @type {toast} */
-  #toast;
+  /** @type {Components} */
+  #view;
 
-  constructor({ toast, form }) {
+  /**
+   * @param {Components} view
+   */
+  constructor(view) {
     const tableBody = document.querySelector("#courses tbody");
 
     if (!tableBody) throw Error("Unable to initialize CursemyList");
 
     this.#tableBody = tableBody;
-    this.#toast = toast;
+    this.#view = view;
+
+    this.render();
+  }
+
+  render() {
+    this.#tableBody.innerHTML = "";
 
     fetch("http://localhost:3004/course?limit=1000")
       .then((response) => response.json())
       .then((response) => {
-        if (response.error) this.#toast.error(response.error.message);
+        if (response.error) this.#view.toast.error(response.error.message);
         else {
           if (!response.data || !Array.isArray(response.data))
-            this.#toast.error("Eita, pai. Deu merda");
+            this.#view.toast.error("Eita, pai. Deu merda");
 
           for (const course of response.data) {
             const tr = document.createElement("tr");
@@ -521,16 +537,18 @@ class CursemyList {
               fetch("http://localhost:3004/course/" + course.id, {
                 method: "DELETE",
               })
-                .catch(() => this.#toast.error("Não rolou não. Dá seu jeito"))
+                .catch(() =>
+                  this.#view.toast.error("Não rolou não. Dá seu jeito"),
+                )
                 .then((response) => response.json())
                 .then((response) => {
                   if (response.data) {
-                    this.#toast.success(
+                    this.#view.toast.success(
                       "Curso #" + course.id + " deletado com sucesso",
                     );
                     this.#tableBody.removeChild(tr);
                   } else if (response.error) {
-                    this.#toast.error(
+                    this.#view.toast.error(
                       response.error.message ??
                         "Erro ao deletar curso #" + course.id,
                     );
@@ -558,8 +576,9 @@ class CursemyList {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const toast = new Toast();
-  const form = new CursemyForm(undefined, { toast });
+  /** @type {Components} */
+  const components = { form: null, list: null, toast: new Toast() };
 
-  new CursemyList({ toast, form });
+  components.form = new CursemyForm(undefined, components);
+  components.list = new CursemyList(components);
 });
