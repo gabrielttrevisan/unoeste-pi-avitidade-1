@@ -55,6 +55,21 @@
   margin: 0 auto;
   width: calc((100vw / 12) * 9);
   max-width: 1024px;
+  margin-top: 32px;
+
+  tr td {
+    text-align: center;
+  }
+
+  .m-level {
+    text-transform: capitalize;
+  }
+
+  .--w150 {
+    max-width: 150px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 }
 
 .course-form {

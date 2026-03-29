@@ -375,6 +375,72 @@ class CursemyForm {
   }
 }
 
+class CursemyList {
+  #tableBody;
+  /** @type {toast} */
+  #toast;
+
+  constructor({ toast }) {
+    const tableBody = document.querySelector("#courses tbody");
+
+    if (!tableBody) throw Error("Unable to initialize CursemyList");
+
+    this.#tableBody = tableBody;
+    this.#toast = toast;
+
+    fetch("http://localhost:3004/course?limit=1000")
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.error) this.#toast.error(response.error.message);
+        else {
+          if (!response.data || !Array.isArray(response.data))
+            this.#toast.error("Eita, pai. Deu merda");
+
+          for (const course of response.data) {
+            const tr = document.createElement("tr");
+
+            const id = document.createElement("td");
+            const slug = document.createElement("td");
+            const author = document.createElement("td");
+            const level = document.createElement("td");
+            const startAt = document.createElement("td");
+            const availableSpots = document.createElement("td");
+            const actions = document.createElement("td");
+
+            id.textContent = course.id;
+            slug.textContent = course.slug;
+            slug.classList.add("--w150");
+            author.textContent = course.author;
+            author.classList.add("--w150");
+            level.innerHTML = `<span class="m-level">${course.level.name}</span>`;
+            startAt.textContent = new Date(course.startAt).toLocaleDateString(
+              "pt-br",
+              {
+                dateStyle: "short",
+              },
+            );
+            availableSpots.textContent = course.spotsAvailable;
+
+            tr.append(
+              id,
+              slug,
+              author,
+              level,
+              startAt,
+              availableSpots,
+              actions,
+            );
+
+            this.#tableBody.appendChild(tr);
+          }
+        }
+      });
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  new CursemyForm(undefined, { toast: new Toast() });
+  const toast = new Toast();
+
+  new CursemyForm(undefined, { toast });
+  new CursemyList({ toast });
 });
