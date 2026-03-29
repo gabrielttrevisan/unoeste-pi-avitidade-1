@@ -70,6 +70,14 @@
     text-overflow: ellipsis;
     overflow: hidden;
   }
+
+  .m-action-btn {
+    background: rgb(143, 48, 48);
+    color: white;
+    border: 0;
+    border-radius: 6px;
+    padding: 8px;
+  }
 }
 
 .course-form {

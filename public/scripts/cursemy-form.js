@@ -407,6 +407,8 @@ class CursemyList {
             const availableSpots = document.createElement("td");
             const actions = document.createElement("td");
 
+            const deleteBtn = document.createElement("button");
+
             id.textContent = course.id;
             slug.textContent = course.slug;
             slug.classList.add("--w150");
@@ -420,6 +422,35 @@ class CursemyList {
               },
             );
             availableSpots.textContent = course.spotsAvailable;
+
+            deleteBtn.type = "button";
+            deleteBtn.textContent = "Deletar";
+            deleteBtn.classList.add("m-action-btn", "--delete");
+
+            deleteBtn.addEventListener("click", (e) => {
+              e.preventDefault();
+
+              fetch("http://localhost:3004/course/" + course.id, {
+                method: "DELETE",
+              })
+                .catch(() => this.#toast.error("Não rolou não. Dá seu jeito"))
+                .then((response) => response.json())
+                .then((response) => {
+                  if (response.data) {
+                    this.#toast.success(
+                      "Curso #" + course.id + " deletado com sucesso",
+                    );
+                    this.#tableBody.removeChild(tr);
+                  } else if (response.error) {
+                    this.#toast.error(
+                      response.error.message ??
+                        "Erro ao deletar curso #" + course.id,
+                    );
+                  }
+                });
+            });
+
+            actions.append(deleteBtn);
 
             tr.append(
               id,
