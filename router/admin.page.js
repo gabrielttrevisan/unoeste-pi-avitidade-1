@@ -12,17 +12,22 @@ const __dirname = path.dirname(__filename);
  * @param {import("express").Response} res
  */
 export default async function handleAdminPage(req, res) {
-  const [form] = await Promise.all([
+  const [form, toast] = await Promise.all([
     readFile(
       path.join(__dirname, "../internal/components/course-form.html"),
+      "utf-8",
+    ),
+    readFile(
+      path.join(__dirname, "../internal/components/toast.html"),
       "utf-8",
     ),
   ]);
 
   HTMLContentBuilder.create(req, res)
     .setTitle("Cursemy")
-    .setContent(form)
+    .setContent(form + toast)
     .withStylesheet("admin")
+    .withScript("cursemy-form")
     .render();
 }
 

@@ -1,4 +1,4 @@
-<form action="" class="course-form">
+<form id="course-form" class="course-form" novalidate>
   <div class="form__input">
     <label for="course-id">ID</label>
     <input type="text" id="course-id" name="id" disabled />
@@ -15,11 +15,21 @@
   </div>
 
   <div class="form__input --required">
+    <label for="course-author">Autor/Monitor/Educador/Professor</label>
+    <input type="text" id="course-author" name="author" />
+  </div>
+
+  <div class="form__input --required">
     <label for="course-desc">Descrição</label>
     <textarea id="course-desc" name="desc"></textarea>
   </div>
 
-  <div class="form__input --required --group">
+  <div class="form__input --required">
+    <label for="course-start-at">Data de Início</label>
+    <input type="date" id="course-start-at" name="startAt" min="1" max="999" />
+  </div>
+
+  <div class="form__input --required">
     <label for="course-spots">Vagas</label>
     <input
       type="number"
@@ -30,7 +40,23 @@
     />
   </div>
 
-  <div class="form__input --required --group">
+  <div class="form__input --required">
+    <label for="course-price">Preço</label>
+    <input type="number" id="course-price" name="price" min="1" max="9999" />
+  </div>
+
+  <div class="form__input --required">
+    <label for="course-discount">Preço com Desconto</label>
+    <input
+      type="number"
+      id="course-discount"
+      name="discount"
+      min="1"
+      max="9999"
+    />
+  </div>
+
+  <div class="form__input --required">
     <label for="course-highlight">É Destaque</label>
     <input type="checkbox" id="course-highlight" name="isHighlight" />
   </div>
@@ -45,18 +71,34 @@
       max="99"
     />
     <select id="course-duration-period" name="durationPeriod">
+      <option value="">-- Período --</option>
       <option value="hour">Hora</option>
       <option value="week">Semana</option>
       <option value="month">Mês</option>
     </select>
   </div>
 
-  <div class="form__input --required --group">
+  <div class="form__input --required">
     <label for="course-level">Nível de Conhecimento Exigido</label>
-    <select id="course-level" name="level"></select>
+    <select id="course-level" name="level">
+      <option value="">-- Selecione --</option>
+    </select>
   </div>
 
   <div class="form__action">
     <button type="submit" id="course-submit">ENVIAR</button>
   </div>
 </form>
+
+<table id="courses">
+  <thead>
+    <th>ID</th>
+    <th>Slug</th>
+    <th>Autor</th>
+    <th>Nível</th>
+    <th>Data Início</th>
+    <th>Vagas</th>
+  </thead>
+
+  <tbody></tbody>
+</table>
