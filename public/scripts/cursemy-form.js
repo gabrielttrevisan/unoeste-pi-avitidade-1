@@ -63,6 +63,8 @@ class CursemyForm {
 
           if (typeof result === "string") element.setCustomValidity(result);
           else element.setCustomValidity("");
+
+          element.reportValidity();
         });
     });
 
@@ -229,7 +231,7 @@ class CursemyForm {
 
     if (!value) return errorMessage;
 
-    const parsed = parseFloat(value);
+    const parsed = parseFloat(value.replace(/,/g, "."));
 
     if (isNaN(parsed)) return errorMessage;
 
@@ -244,8 +246,8 @@ class CursemyForm {
 
     if (!value || !values || !values.price) return errorMessage;
 
-    const parsed = parseFloat(value);
-    const parsedPrice = parseFloat(values.price);
+    const parsed = parseFloat(value.replace(/,/g, "."));
+    const parsedPrice = parseFloat(values.price.replace(/,/g, "."));
 
     if (isNaN(parsed) || isNaN(parsedPrice)) return errorMessage;
 
@@ -303,6 +305,47 @@ class CursemyForm {
     return "";
   }
 
+  edit(course) {
+    const inputId = this.#form.elements.namedItem("id");
+    const inputSlug = this.#form.elements.namedItem("slug");
+    const inputTitle = this.#form.elements.namedItem("title");
+    const inputDesc = this.#form.elements.namedItem("desc");
+    const inputAuthor = this.#form.elements.namedItem("author");
+    const inputStartAt = this.#form.elements.namedItem("startAt");
+    /** @type {HTMLSelectElement} */
+    const inputLevel = this.#form.elements.namedItem("level");
+    const inputSpots = this.#form.elements.namedItem("availableSpots");
+    /** @type {HTMLInputElement} */
+    const inputHighlight = this.#form.elements.namedItem("isHighlight");
+    const inputDurCount = this.#form.elements.namedItem("durationCount");
+    const inputDurPeriod = this.#form.elements.namedItem("durationPeriod");
+    const inputPrice = this.#form.elements.namedItem("price");
+    const inputDisc = this.#form.elements.namedItem("discount");
+
+    inputId.value = course.id;
+    inputSlug.value = course.slug;
+    inputDesc.value = course.description;
+    inputAuthor.value = course.author;
+    inputDisc.value = course.priceWithDiscount.toLocaleString("en-us");
+    inputPrice.value = course.price.toLocaleString("en-us");
+    inputHighlight.checked = [true, "true"].includes(course.isHighlight);
+    inputLevel.value = course.level.id;
+    inputSpots.value = course.spotsAvailable;
+    inputTitle.value = course.title;
+
+    const startAt = new Date(course.startAt);
+
+    inputStartAt.value = `${startAt.getFullYear()}-${(startAt.getMonth() + 1).toString().padStart(2, "0")}-${startAt.getDate().toString().padStart(2, "0")}`;
+
+    const [, count, rawPeriod] = course.duration.match(/^\s*(\d+)\s*(\w+)\s*$/);
+
+    inputDurCount.value = parseInt(count);
+
+    if (rawPeriod.match(/(m[êe]s)/)) inputDurPeriod.value = "month";
+    else if (rawPeriod.match(/(semana)/)) inputDurPeriod.value = "week";
+    else if (rawPeriod.match(/(hora)/)) inputDurPeriod.value = "hour";
+  }
+
   /**
    * @param {SubmitEvent} e
    */
@@ -324,20 +367,54 @@ class CursemyForm {
       if (typeof result === "string") {
         element.setCustomValidity(result);
       } else element.setCustomValidity("");
+
+      element.reportValidity();
     }
 
     if (this.#form.checkValidity()) {
       const formData = new FormData(this.#form);
+      /** @type {HTMLButtonElement} */
+      const submit = this.#form.querySelector("[type='submit']");
+      const id = formData.get("id");
 
-      if (formData.get("id")) {
+      if (!submit) this.#toast.show("Eita, pai. Deu algo errado.", "error");
+
+      submit.disabled = true;
+
+      if (id) {
+        fetch("http://localhost:3004/course/" + id, {
+          method: "PUT",
+          body: JSON.stringify({
+            author: formData.get("author"),
+            description: formData.get("desc"),
+            duration: `${formData.get("durationCount")} ${this.#getDuration(formData.get("durationPeriod"), formData.get("durationCount"))}`,
+            isHighlight: formData.get("isHighlight") === "true" ? true : false,
+            levelId: parseInt(formData.get("level")),
+            price: parseFloat(formData.get("price")),
+            priceWithDiscount: parseFloat(formData.get("discount")),
+            slug: formData.get("slug"),
+            spotsAvailable: parseInt(formData.get("availableSpots")),
+            startAt: this.#getStartAt(formData.get("startAt")),
+            title: formData.get("title"),
+          }),
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+        })
+          .then((response) => response.json())
+          .then((response) => {
+            if (response.error) {
+              if (response.error.message)
+                this.#toast.error(response.error.message);
+            } else {
+              this.#toast.success(
+                `Curso #${id} editado com sucesso.<br/>ID:${response.data.id}`,
+              );
+              location.reload();
+            }
+          })
+          .finally(() => (submit.disabled = false));
       } else {
-        /** @type {HTMLButtonElement} */
-        const submit = this.#form.querySelector("[type='submit']");
-
-        if (!submit) this.#toast.show("Eita, pai. Deu algo errado.", "error");
-
-        submit.disabled = true;
-
         fetch("http://localhost:3004/course", {
           method: "POST",
           body: JSON.stringify({
@@ -380,7 +457,7 @@ class CursemyList {
   /** @type {toast} */
   #toast;
 
-  constructor({ toast }) {
+  constructor({ toast, form }) {
     const tableBody = document.querySelector("#courses tbody");
 
     if (!tableBody) throw Error("Unable to initialize CursemyList");
@@ -408,6 +485,7 @@ class CursemyList {
             const actions = document.createElement("td");
 
             const deleteBtn = document.createElement("button");
+            const editBtn = document.createElement("button");
 
             id.textContent = course.id;
             slug.textContent = course.slug;
@@ -422,6 +500,16 @@ class CursemyList {
               },
             );
             availableSpots.textContent = course.spotsAvailable;
+
+            editBtn.type = "button";
+            editBtn.textContent = "Editar";
+            editBtn.classList.add("m-action-btn", "--edit");
+
+            editBtn.addEventListener("click", (e) => {
+              e.preventDefault();
+
+              form.edit(course);
+            });
 
             deleteBtn.type = "button";
             deleteBtn.textContent = "Deletar";
@@ -450,7 +538,7 @@ class CursemyList {
                 });
             });
 
-            actions.append(deleteBtn);
+            actions.append(editBtn, deleteBtn);
 
             tr.append(
               id,
@@ -471,7 +559,7 @@ class CursemyList {
 
 document.addEventListener("DOMContentLoaded", () => {
   const toast = new Toast();
+  const form = new CursemyForm(undefined, { toast });
 
-  new CursemyForm(undefined, { toast });
-  new CursemyList({ toast });
+  new CursemyList({ toast, form });
 });

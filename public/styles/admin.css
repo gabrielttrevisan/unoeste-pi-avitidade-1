@@ -55,10 +55,31 @@
   margin: 0 auto;
   width: calc((100vw / 12) * 9);
   max-width: 1024px;
-  margin-top: 32px;
+  margin-top: 64px;
+  border-collapse: collapse;
 
-  tr td {
+  tr {
+    th {
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.15);
+    }
+  }
+
+  tbody td {
     text-align: center;
+    padding: 8px;
+  }
+
+  tbody tr {
+    transition: all 200ms ease;
+
+    &:nth-child(odd) {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
   }
 
   .m-level {
@@ -72,11 +93,23 @@
   }
 
   .m-action-btn {
-    background: rgb(143, 48, 48);
     color: white;
     border: 0;
     border-radius: 6px;
     padding: 8px;
+    cursor: pointer;
+
+    &:not(:first-child) {
+      margin-left: 8px;
+    }
+
+    &.--delete {
+      background: rgba(119, 22, 22, 0.9);
+    }
+
+    &.--edit {
+      background: rgba(22, 119, 22, 0.9);
+    }
   }
 }
 
