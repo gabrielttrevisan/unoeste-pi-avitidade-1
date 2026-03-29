@@ -524,7 +524,7 @@ class CursemyList {
             editBtn.addEventListener("click", (e) => {
               e.preventDefault();
 
-              form.edit(course);
+              this.#view.form.edit(course);
             });
 
             deleteBtn.type = "button";
